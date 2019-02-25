@@ -26,7 +26,33 @@ public class AddressLoader {
 		String curLine;
 		while (sc.hasNextLine()) {
 			curLine = sc.nextLine();
-			// TODO Parse line, enter into 'addresses'
+
+			// Split line at spaces
+			String[] addressParts = curLine.split("  ");
+
+			// If not all parts are accounted for, inform user and ignore line
+			if (addressParts.length < 4)
+				System.out.println("Invalid address found!\n> " + curLine);
+			else {
+				int houseNum;
+				int streetNum;
+				StreetDirection streetDir;
+
+				try {
+					// Read House Number, Street Number, and StreetDirection from addressParts
+					houseNum = Integer.parseInt(addressParts[0]);
+					streetNum = Integer.parseInt(addressParts[2].substring(0, 1));
+					if (addressParts[1].equals("South")) {
+						streetDir = StreetDirection.SOUTH;
+					} else
+						streetDir = StreetDirection.EAST;
+
+					// Create corresponding Address object, add it to 'addresses'
+					addresses.add(new Address(houseNum, streetNum, streetDir));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		// Clean Up

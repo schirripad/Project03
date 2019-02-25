@@ -12,6 +12,7 @@ public class AddressLoader {
 	public static PriorityQueue<Address> loadAddresses(String fileName) throws IOException {
 		PriorityQueue<Address> addresses = new PriorityQueue<Address>();
 		File address = new File(fileName);
+
 		// Check if file exists
 		if (!address.exists() || address.isDirectory()) {
 			throw new FileNotFoundException();
@@ -25,7 +26,9 @@ public class AddressLoader {
 		String curLine;
 		while (sc.hasNextLine()) {
 			curLine = sc.nextLine();
+			// TODO Parse line, enter into 'addresses'
 		}
+
 		// Clean Up
 		fileIn.close();
 		sc.close();

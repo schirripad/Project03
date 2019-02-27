@@ -50,7 +50,7 @@ public class AddressLoader {
 					// Create corresponding Address object, add it to 'addresses'
 					addresses.add(new Address(houseNum, streetNum, streetDir));
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
+					System.out.println("Invalid address found!\n>" + curLine);
 				}
 			}
 		}

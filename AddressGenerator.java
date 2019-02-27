@@ -17,7 +17,7 @@ public class AddressGenerator {
 
 				StringBuilder strBuilder = new StringBuilder();
 
-				blockNum = rand.nextInt((100 - 1) + 1);
+				blockNum = rand.nextInt((200 - 1) + 1);
 				// Minor bug fix of above ^ where we weren't getting a block num if random num
 				// was 100 DH
 				// System.out.println(blockNum);

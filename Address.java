@@ -69,9 +69,17 @@ public class Address implements Comparable<Address> {
 		if (sDir == streetDir && sNum == streetNumber) {
 			return Math.abs(hNum - houseNumber);
 		} else {
-			// Compute distance
+			// Otherwise calculate distance
+			if (streetDir == sDir) {
+				int xDis = Math.abs(hNum - houseNumber);
+				int yDis = Math.abs((sNum * 100) - (streetNumber * 100));
+				return xDis + yDis;
+			} else {
+				int xDis = Math.abs(hNum - (streetNumber * 100));
+				int yDis = Math.abs((sNum * 100) - houseNumber);
+				return xDis + yDis;
+			}
 		}
-		return -1;
 	}
 
 	public int getHouseNumber() {
@@ -88,6 +96,13 @@ public class Address implements Comparable<Address> {
 
 	@Override
 	public int compareTo(Address a) {
+		int aDis, thisDis;
+		aDis = a.distanceFrom(SandwichTruck.distribtutionCenter);
+		thisDis = this.distanceFrom(SandwichTruck.distribtutionCenter);
+		if (thisDis > aDis) {
+			return 1;
+		} else if (thisDis < aDis)
+			return -1;
 		return 0;
 	}
 

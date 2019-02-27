@@ -28,7 +28,7 @@ public class AddressLoader {
 			curLine = sc.nextLine();
 
 			// Split line at spaces
-			String[] addressParts = curLine.split("  ");
+			String[] addressParts = curLine.split(" ");
 
 			// If not all parts are accounted for, inform user and ignore line
 			if (addressParts.length < 4)

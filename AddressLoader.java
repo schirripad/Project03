@@ -41,7 +41,7 @@ public class AddressLoader {
 				try {
 					// Read House Number, Street Number, and StreetDirection from addressParts
 					houseNum = Integer.parseInt(addressParts[0]);
-					streetNum = Integer.parseInt(addressParts[2].substring(0, 1));
+					streetNum = Integer.parseInt(addressParts[2]);
 					if (addressParts[1].equals("South")) {
 						streetDir = StreetDirection.SOUTH;
 					} else

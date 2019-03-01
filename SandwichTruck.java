@@ -19,18 +19,18 @@ public class SandwichTruck {
 	public Address getCurrentAddress() {
 		return curAddress;
 	}
-
+	
 	public void showAreaMap() {
-
+		
 		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		frame.setPreferredSize(new Dimension(400, 400));
-		frame.add(new MapGraphics(this, 400));
-
-		frame.pack();
-		frame.setVisible(true);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        frame.setPreferredSize(new Dimension(400, 400));
+        frame.add(new MapGraphics(this, 400));
+        
+        frame.pack();
+        frame.setVisible(true);
+		
 	}
 
 }

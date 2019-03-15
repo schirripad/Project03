@@ -1,35 +1,35 @@
 package Simulation;
 
-import java.awt.Dimension;
 import java.util.PriorityQueue;
 
-import javax.swing.JFrame;
+import Simulation.gui.MapWindow;
 
 public class SandwichTruck {
 	public static final Address distribtutionCenter = new Address(910, 9, StreetDirection.SOUTH);
 
-	public Address curAddress;
-	public PriorityQueue<Order> targets = new PriorityQueue<Order>();
-	public static String baseMap = "";
+	private Address curAddress;
+	private PriorityQueue<Order> orders = new PriorityQueue<Order>();
+	private static String baseMap = "";
 
 	public SandwichTruck(int addressNum, int streetNum, StreetDirection streetDir) {
 		curAddress = new Address(addressNum, streetNum, streetDir);
+	}
+
+	public SandwichTruck(Address a) {
+		curAddress = a;
 	}
 
 	public Address getCurrentAddress() {
 		return curAddress;
 	}
 
+	public void addOrder(Order o) {
+		orders.add(o);
+	}
+
 	public void showAreaMap() {
 
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		frame.setPreferredSize(new Dimension(400, 400));
-		frame.add(new MapGraphics(this, 400));
-
-		frame.pack();
-		frame.setVisible(true);
+		MapWindow mw = new MapWindow(this);
 
 	}
 

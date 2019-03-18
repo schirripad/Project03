@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 public class AddressGenerator {
-	private static int blockNum, count, houseNumber, streetDir, streetNumber;
+	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime;
 
 	public static void generateAddresses() throws IOException {
 		PrintWriter out = new PrintWriter(new File("addresses.txt"));
@@ -18,8 +18,10 @@ public class AddressGenerator {
 				StringBuilder strBuilder = new StringBuilder();
 
 				blockNum = rand.nextInt((200 - 1) + 1);
-				// Minor bug fix of above ^ where we weren't getting a block num if random num
-				// was 100 DH
+				randomHour = rand.nextInt((18 - 10) + 1 ) + 10;
+				randomMinute = rand.nextInt((59 - 0) + 1) + 0;
+				//Creating Random Hours and Random Minutes < -- DH
+
 				// System.out.println(blockNum);
 				houseNumber = (blockNum * 10);
 				if ((houseNumber / 10) != 0 && houseNumber != 1000) {
@@ -35,7 +37,41 @@ public class AddressGenerator {
 
 				streetNumber = rand.nextInt((20 - 1) + 1);
 				strBuilder.append(" " + streetNumber + " Street");
-				out.print(strBuilder);
+
+                if(randomHour <= 11) {
+                    if (randomMinute < 10)
+                        strBuilder.append(" " + randomHour + ":0" + randomMinute + "AM");
+                    else
+                        strBuilder.append(" " + randomHour + ":" + randomMinute + "AM");
+                }
+
+                //Above Code ^ if less than 11 for hour, it stays in the AM form <-- DH
+
+                else if ( randomHour == 12){
+
+                    if (randomMinute < 10)
+                        strBuilder.append(" " + randomHour + ":0" + randomMinute + "PM");
+                    else
+                        strBuilder.append(" " + randomHour + ":" + randomMinute + "PM");
+                }
+
+                //Above Code ^ if 12 is the hour, it appends PM form for afternoon <-- DH
+
+                else {
+                    convertedTime = randomHour - 12;
+                    System.out.println(convertedTime);
+                    if (randomMinute < 10)
+                        strBuilder.append(" " + convertedTime + ":0" + randomMinute + "PM");
+                    else
+                        strBuilder.append(" " + convertedTime + ":" + randomMinute + "PM");
+
+                }
+
+                //Above Code ^ if greater than 12 for the hour, it converts time to the 12 hour PM form for afternoon <-- DH
+
+
+
+                out.print(strBuilder);
 
 				count++;
 				out.println();

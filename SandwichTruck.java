@@ -9,7 +9,6 @@ public class SandwichTruck {
 
 	private Address curAddress;
 	private PriorityQueue<Order> orders = new PriorityQueue<Order>();
-	private static String baseMap = "";
 
 	public SandwichTruck(int addressNum, int streetNum, StreetDirection streetDir) {
 		curAddress = new Address(addressNum, streetNum, streetDir);
@@ -25,6 +24,10 @@ public class SandwichTruck {
 
 	public void addOrder(Order o) {
 		orders.add(o);
+	}
+
+	public Order getNextOrder() {
+		return orders.peek();
 	}
 
 	public void showAreaMap() {

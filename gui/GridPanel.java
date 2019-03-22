@@ -1,6 +1,7 @@
 package Simulation.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -11,6 +12,7 @@ import Simulation.SandwichTruck;
 import Simulation.StreetDirection;
 
 public class GridPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	// 20 Lines, 17 total spaces
 	private final int NUM_SPACES = 17;
 	private SandwichTruck t;
@@ -25,7 +27,7 @@ public class GridPanel extends JPanel {
 		Graphics2D g = (Graphics2D) g1;
 		drawGrid(g);
 		drawTruck(g);
-		drawRoute(g);
+		// drawRoute(g);
 	}
 
 	private void drawGrid(Graphics2D g) {
@@ -44,11 +46,27 @@ public class GridPanel extends JPanel {
 	}
 
 	private void drawTruck(Graphics2D g) {
+		// Store current address
 		Address truckAddress = t.getCurrentAddress();
+		// Store original graphics color, set to Red
 		Color c = g.getColor();
 		g.setColor(Color.RED);
 
+		// Get trucks x and y
+		Dimension curXY = getTruckXY();
+		int blockX = (int) curXY.getWidth();
+		int blockY = (int) curXY.getHeight();
+		g.fillOval(blockX, blockY, 5, 5);
+		g.setColor(c);
+
+	}
+
+	private Dimension getTruckXY() {
+		// Nine houses on a block, so in between two streets there are nine available
+		// spots
 		int houseDistance = lineDistance / 9;
+
+		Address truckAddress = t.getCurrentAddress();
 		int blockX, blockY;
 		if (truckAddress.getStreetDirection() == StreetDirection.EAST) {
 			// Y value is street number, house is X
@@ -62,12 +80,30 @@ public class GridPanel extends JPanel {
 					- ((truckAddress.getHouseNumber() % 100) * houseDistance);
 		}
 
-		g.fillOval(blockX, blockY, 10, 10);
-		g.setColor(c);
-
+		return new Dimension(blockX, blockY);
 	}
 
 	private void drawRoute(Graphics2D g) {
+		// Set Color, change to blue
+		Color c = g.getColor();
+		g.setColor(Color.BLUE);
 
+		// Store trucks current address
+		Dimension cur = getTruckXY();
+		int tX = (int) cur.getWidth();
+		int tY = (int) cur.getHeight();
+		// Draw Route based on instructions, EC, go a certain distance, turn right, go a
+		// certain distance, turn left
+		// for(/*Instruction i : instructions*/) {
+		// Deal with instruction
+		/*
+		 * if (i.getDirection() == Directions.LEFT || i.getDirection() ==
+		 * Directions.RIGHT) { g.drawLine(tX, tY, tX + i.getDistance(), tY); } else {
+		 * g.drawLine(tX, tY, tX, tY + i.getDistance()); } // if(/*Turn) { // Move in
+		 * that direction by 1 unit, decrement instruction by 1 unit, push back // to
+		 * top of list // Adjust Truck address to match where it currently is
+		 * 
+		 * } // } // }
+		 */
 	}
 }

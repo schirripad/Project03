@@ -58,4 +58,9 @@ public class Address implements Comparable<Address> {
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		return (streetDir + " " + streetNumber + " " + houseNumber);
+	}
+
 }

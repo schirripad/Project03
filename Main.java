@@ -1,29 +1,25 @@
 package Simulation;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Panel;
 import java.io.IOException;
-import java.util.*;
+import java.util.PriorityQueue;
 
-import javax.swing.JFrame;
+import Simulation.gui.MapWindow;
 
 public class Main {
-	
-    public static void main(String[] args) {
-    	
-    	SandwichTruck truck = new SandwichTruck(900, 9, StreetDirection.EAST);
-    	
-    	try {
-    		
+
+	public static void main(String[] args) {
+		new MapWindow(new SandwichTruck(SandwichTruck.distribtutionCenter));
+		try {
 			AddressGenerator.generateAddresses();
-			truck.targets = AddressLoader.loadAddresses("addresses.txt");
-			
+
+			PriorityQueue<Order> orders = AddressLoader.loadOrders("addresses.txt");
+			for (Order a : orders) {
+				System.out.println(a.getAddress().toString() + " at time "
+						+ a.getTime().toString());
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	        
-        truck.showAreaMap();
-        
-    }
+	}
 }

@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import Simulation.Address;
+import Simulation.RouteTo;
 import Simulation.SandwichTruck;
 import Simulation.StreetDirection;
 
@@ -23,11 +25,16 @@ public class GridPanel extends JPanel {
 	}
 
 	@Override
+	public void setSize(int x, int y) {
+		super.setSize(x, x);
+	}
+
+	@Override
 	public void paint(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		drawGrid(g);
 		drawTruck(g);
-		// drawRoute(g);
+		drawRoute(g);
 	}
 
 	private void drawGrid(Graphics2D g) {
@@ -84,26 +91,27 @@ public class GridPanel extends JPanel {
 	}
 
 	private void drawRoute(Graphics2D g) {
-		// Set Color, change to blue
-		Color c = g.getColor();
-		g.setColor(Color.BLUE);
+		Address next = t.peekNextRouteInstruction();
+		Address cur = t.getCurrentAddress();
 
-		// Store trucks current address
-		Dimension cur = getTruckXY();
-		int tX = (int) cur.getWidth();
-		int tY = (int) cur.getHeight();
-		// Draw Route based on instructions, EC, go a certain distance, turn right, go a
-		// certain distance, turn left
-		// for(/*Instruction i : instructions*/) {
-		// Deal with instruction
-		/*
-		 * if (i.getDirection() == Directions.LEFT || i.getDirection() ==
-		 * Directions.RIGHT) { g.drawLine(tX, tY, tX + i.getDistance(), tY); } else {
-		 * g.drawLine(tX, tY, tX, tY + i.getDistance()); } // if(/*Turn) { // Move in
-		 * that direction by 1 unit, decrement instruction by 1 unit, push back // to
-		 * top of list // Adjust Truck address to match where it currently is
-		 * 
-		 * } // } // }
-		 */
+		if (next.getHouseNumber() == cur.getHouseNumber() && cur.getStreetNumber() == next.getStreetNumber()
+				&& next.getStreetDirection() == cur.getStreetDirection()) {
+			next = t.getNextRouteInstruction();
+		}
+
+		if (next.getStreetDirection() == cur.getStreetDirection()) {
+			if (next.getHouseNumber() > cur.getHouseNumber()) {
+				// Add one to house number
+				Address a = new Address(cur.getHouseNumber() + 1, cur.getStreetNumber(), cur.getStreetDirection());
+				t.setAddress(a);
+			} else {
+				// Subtract one
+				Address a = new Address(cur.getHouseNumber() - 1, cur.getStreetNumber(), cur.getStreetDirection());
+				t.setAddress(a);
+			}
+		} else {
+			Address a = new Address(cur.getStreetNumber() * 100, cur.getHouseNumber() / 100, cur.getStreetDirection());
+			t.setAddress(a);
+		}
 	}
 }

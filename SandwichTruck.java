@@ -29,6 +29,10 @@ public class SandwichTruck {
 
 	public RouteTo nextRoute() {
 		curRoute = new RouteTo(seeNextOrder().getAddress());
+		System.out.println("Route: ");
+		for (Address a : curRoute.getRoute()) {
+			System.out.println(a.getHouseNumber() + " " + a.getStreetNumber() + "st");
+		}
 		return curRoute;
 	}
 

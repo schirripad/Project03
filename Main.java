@@ -5,7 +5,15 @@ import java.util.PriorityQueue;
 
 import Simulation.gui.MapWindow;
 
+/**
+ * 
+ * @author Daniel, Dylan, Rio
+ *
+ */
 public class Main {
+
+	// TODO Generate jar file to upload to github
+	// TODO Add class headers
 
 	public static void main(String[] args) {
 		SandwichTruck t = new SandwichTruck(SandwichTruck.distribtutionCenter);

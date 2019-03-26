@@ -1,7 +1,11 @@
 package Simulation;
 
 import java.time.LocalTime;
-
+/**
+ * 
+ * @author schirripad@moravian.edu
+ *
+ */
 public class Address implements Comparable<Address> {
 
 	private int houseNumber, streetNumber;
@@ -16,7 +20,6 @@ public class Address implements Comparable<Address> {
 	public Address(int houseNumber, int streetNum) {
 		this.houseNumber = houseNumber;
 		this.streetNumber = streetNum;
-//		this.time = time;
 	}
 
 	public int distanceFrom(Address a) {

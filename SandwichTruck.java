@@ -1,11 +1,12 @@
 package Simulation;
 
+import java.awt.Rectangle;
 import java.util.PriorityQueue;
 
 import Simulation.gui.MapWindow;
 
 public class SandwichTruck {
-	public static final Address distribtutionCenter = new Address(910, 9, StreetDirection.SOUTH);
+	public static final Address distribtutionCenter = new Address(910, 5, StreetDirection.EAST);
 
 	private Address curAddress;
 	private RouteTo curRoute;
@@ -71,7 +72,11 @@ public class SandwichTruck {
 	}
 
 	public void showAreaMap() {
-		new MapWindow(this);
+		new MapWindow(this, new Rectangle(20, 20));
+	}
+
+	public PriorityQueue<Order> getAllOrders() {
+		return orders;
 	}
 
 }

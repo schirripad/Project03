@@ -1,59 +1,101 @@
 package Simulation;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class RouteTo {
 
-	public static List<Address> instructions;
+	public static List<Address> instructions ;
 	private static double routeLength = 0;
-	SandwichTruck truck = new SandwichTruck(910, 9, StreetDirection.SOUTH);
+	SandwichTruck truck ;
 
-	public RouteTo(Address a) {
-		int hNum = a.getHouseNumber();
-		int sNum = a.getStreetNumber();
-		StreetDirection sDir = a.getStreetDirection();
 
+
+	RouteTo(Order o  , SandwichTruck t){
+		truck = t;
+		Address a = o.getAddress();
+		int hNum;
+		int sNum;
+		StreetDirection sDir;
+		int truckHouseNum;
+		int truckStreetNum;
+		StreetDirection truckDir;
 		instructions = new LinkedList<>();
-		instructions.add(truck.getCurrentAddress());
+		boolean sameDirection;
+		boolean sameStreetNum;
 
-		boolean sameDirection = sDir == truck.getCurrentAddress().getStreetDirection(); // Same direction streets
-		boolean sameStreetNum = sNum == truck.getCurrentAddress().getStreetNumber();
+		while (!(a.getStreetDirection().equals(truck.getCurrentAddress().getStreetDirection()))|| (a.getStreetNumber()!=truck.getCurrentAddress().getStreetNumber())){
 
-		// while (truck.getCurrentAddress() != a) {
+			hNum = a.getHouseNumber();
+			sNum = a.getStreetNumber();
+			sDir = a.getStreetDirection();
+			truckHouseNum = truck.getCurrentAddress().getHouseNumber();
+			truckStreetNum = truck.getCurrentAddress().getStreetNumber();
+			truckDir = truck.getCurrentAddress().getStreetDirection();
 
-		// basic case
-		if (sameDirection && sameStreetNum) {
-			// Address tem = new Address(hNum-truck.targets[1].getHouseNumber(),sNum,sDir);
-			instructions.add(a);
-			routeLength += Math.abs(hNum - truck.getCurrentAddress().getHouseNumber());
-		}
-		// more that two moves
-		else if (sameDirection && !sameStreetNum) {
-			if (sameDirection && sNum > truck.getCurrentAddress().getStreetNumber()) {
+
+			sameDirection = sDir == truckDir; // Same direction streets
+			sameStreetNum = sNum == truckStreetNum;
+
+
+
+		// more that two moves; eg: *---()<- corner, so now it is in 2 moves case
+		//                              |
+		//                              |
+		//                               ------*
+			//else if
+		 if(sameDirection) {
+			int corner;
+			if (truckDir == StreetDirection.SOUTH && sDir == StreetDirection.SOUTH ) {
+				corner = truckHouseNum - (truckHouseNum  % 100);
+				instructions.add(new Address(corner, truckStreetNum, StreetDirection.EAST)); //Not sure if we necessarily have to add the streetDirection here
+				routeLength += Math.abs(corner - truckHouseNum);
+				// truck =(new SandwichTruck(corner, truckStreetNum, StreetDirection.EAST));
+				truck.setAddress(new Address(corner, truckStreetNum, StreetDirection.EAST));
+				continue;
+
+			} else if (truckDir == StreetDirection.EAST&& sDir == StreetDirection.EAST) {
+				corner =truckHouseNum - (truckHouseNum  % 100);
+				instructions.add(new Address(corner, sNum, StreetDirection.SOUTH));//Not sure if we necessarily have to add the streetDirection here
+				routeLength += Math.abs(corner - hNum);
+				truck.setAddress(new Address(corner, sNum, StreetDirection.SOUTH));
+				continue;
 
 			}
 
-			else if (true) {
-
-			}
 		}
-		// In two moves
+
+		// In two moves eg: *---() <- new address
+		//                      |
+		//                      |
+		//                      *
 		else {
-			if (truck.getCurrentAddress().getStreetDirection() == StreetDirection.SOUTH) {
-				int x1 = sNum;
-				int y2 = truck.getCurrentAddress().getStreetNumber();
-				instructions.add(new Address(x1, y2));
-				routeLength += Math.abs(x1 - truck.getCurrentAddress().getHouseNumber());
-			} else if (truck.getCurrentAddress().getStreetDirection() == StreetDirection.EAST) {
-				int y1 = sNum;
-				int x2 = truck.getCurrentAddress().getStreetNumber();
-				instructions.add(new Address(x2, y1));
-				routeLength += Math.abs(y1 - truck.getCurrentAddress().getHouseNumber());
+			int y1,x2;
+			if (truckDir== StreetDirection.SOUTH){
+				x2 = sNum;
+				y1 = truckStreetNum;
+
+//				instructions.add(new Address(x1,y2));
+				instructions.add(new Address(y1*100,x2,StreetDirection.EAST));
+				routeLength += Math.abs( x2*100- truckHouseNum);
+				break;
 			}
-			// } close while
+			else if (truckDir == StreetDirection.EAST){
+//				instructions.add(new Address(x2,y1));
+				x2 = sNum;
+				y1 = truckStreetNum;
+				instructions.add(new Address(y1*100,x2,StreetDirection.SOUTH));
+				routeLength += Math.abs(x2*100 - truckHouseNum);
+//				instructions.add(new Address(x2*100,y1,StreetDirection.SOUTH));
+//				routeLength += Math.abs(x2*100 - truckHouseNum);
+				break;
+			}
+
+				} //close while
 
 		}
+		instructions.add(a);
+		truck.setAddress(a);
+
 	}
 
 	public double getRouteLength() {
@@ -68,8 +110,6 @@ public class RouteTo {
 		if (instructions.size() != 1)
 			instructions.remove(0);
 	}
-
-	// public void addAddress(Address ad) {
-	// }
-
 }
+
+

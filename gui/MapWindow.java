@@ -49,7 +49,7 @@ public class MapWindow extends JFrame {
 			}
 		});
 
-		repaintTimer.setDelay(1000);
+		repaintTimer.setDelay(500);
 		repaintTimer.start();
 	}
 }

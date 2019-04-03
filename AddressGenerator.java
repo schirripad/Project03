@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 public class AddressGenerator {
-	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime;
+	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime, randomChip, randomDrink, randomSandwich;
 
 	public static void generateAddresses() throws IOException {
 		PrintWriter out = new PrintWriter(new File("addresses.txt"));

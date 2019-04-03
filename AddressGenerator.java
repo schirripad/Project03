@@ -71,6 +71,44 @@ public class AddressGenerator {
 				// Above Code ^ if greater than 12 for the hour, it converts time to the 12 hour
 				// PM form for afternoon <-- DH
 
+				if(randomChip == 1){
+					strBuilder.append(" Order: Chip: " + randomChip);
+				}
+
+				else if (randomChip == 2){
+					strBuilder.append(" Order: Chip: " + randomChip);
+				}
+
+				else{
+					strBuilder.append(" Order: Chip: " + randomChip);
+				}
+
+				if(randomDrink == 1){
+					strBuilder.append(" Drink: " + randomDrink);
+				}
+
+				else if (randomDrink == 2){
+					strBuilder.append(" Drink: " + randomDrink);
+				}
+
+				else{
+					strBuilder.append(" Drink: " + randomDrink);
+				}
+
+				if(randomSandwich == 1){
+					strBuilder.append(" Sandwich: " + randomSandwich);
+				}
+
+				else if (randomSandwich == 2){
+					strBuilder.append(" Sandwich: " + randomSandwich);
+				}
+
+				else{
+					strBuilder.append(" Sandwich: " + randomSandwich);
+				}
+
+				// sort of spaghetti code, but it works ^ DH
+
 				out.print(strBuilder);
 
 				count++;

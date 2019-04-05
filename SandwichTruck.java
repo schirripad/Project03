@@ -12,12 +12,13 @@ import Simulation.gui.MapWindow;
  *
  */
 public class SandwichTruck {
-	public static final Address distribtutionCenter = new Address(910, 9, StreetDirection.SOUTH);
+	public static final Address distribtutionCenter = new Address(510, 5, StreetDirection.EAST);
 
 	private Address curAddress;
 	private Router curRoute;
 	private PriorityQueue<Order> orders = new PriorityQueue<Order>();
 	private Order curOrder;
+	private Rectangle neighborHoodSize = new Rectangle(20, 20);
 
 	private int truckHeading = 2;
 
@@ -105,8 +106,12 @@ public class SandwichTruck {
 		return orders.peek();
 	}
 
+	public void setNeighborHoodSize(Rectangle r) {
+		this.neighborHoodSize = r;
+	}
+
 	public void showAreaMap() {
-		new MapWindow(this, new Rectangle(20, 20));
+		new MapWindow(this, neighborHoodSize);
 	}
 
 	public PriorityQueue<Order> getAllOrders() {

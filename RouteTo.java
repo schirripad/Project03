@@ -10,7 +10,7 @@ import java.util.*;
  *
  */
 
-public class RouteTo {
+public class RouteTo implements Router{
 
 	public List<Instruction> instructions ;
 	private static double routeLength = 0;

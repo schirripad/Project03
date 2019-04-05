@@ -17,47 +17,53 @@ public class AddressGenerator {
 
 				StringBuilder strBuilder = new StringBuilder();
 
-				blockNum = rand.nextInt((200 - 1) + 1);
-				randomHour = rand.nextInt((18 - 10) + 1) + 10;
+				randomHour = rand.nextInt((18 - 10) + 1 ) + 10;
 				randomMinute = rand.nextInt((59 - 0) + 1) + 0;
 				randomChip = rand.nextInt((2 - 0) + 1) + 1;
 				randomDrink = rand.nextInt((2 - 0) + 1) + 1;
 				randomSandwich = rand.nextInt((2 - 0) + 1) + 1;
-				// Creating Random Hours and Random Minutes < -- DH
 
-				// System.out.println(blockNum);
+
+				blockNum = rand.nextInt((200 - 1) + 1 );
+				if(blockNum  == 0){
+					blockNum += 1;
+				}
+				//System.out.println(blockNum);
 				houseNumber = (blockNum * 10);
-				if ((houseNumber / 10) != 0 && houseNumber != 1000) {
+				System.out.println(houseNumber);
+
+				if((houseNumber % 100) != 0 && houseNumber != 1000){
+					strBuilder.append(houseNumber);
+				}
+				else{
+					houseNumber = houseNumber + 10;
 					strBuilder.append(houseNumber);
 				}
 
-				streetDir = rand.nextInt((2 - 1) + 1);
-				// System.out.println(southEastNum);
-				if (streetDir == 0)
+				streetDir = rand.nextInt((2-1) + 1);
+				//System.out.println(southEastNum);
+				if(streetDir == 0)
 					strBuilder.append(" South");
 				else
 					strBuilder.append(" East");
 
+
+
+
 				streetNumber = rand.nextInt((20 - 1) + 1);
 				if(streetNumber == 0)
 					streetNumber+=1;
-					//System.out.println(streetNumber);
-					//Fixes our issue with Street Number printing zero - DH
-					strBuilder.append(" "+streetNumber+" Street");
+				//System.out.println(streetNumber);
+				strBuilder.append(" "+streetNumber+" Street");
 
-
-				strBuilder.append(" " + streetNumber + " Street");
-
-				if (randomHour <= 11) {
+				if(randomHour <= 11) {
 					if (randomMinute < 10)
 						strBuilder.append(" " + randomHour + ":0" + randomMinute + "AM");
 					else
 						strBuilder.append(" " + randomHour + ":" + randomMinute + "AM");
 				}
 
-				// Above Code ^ if less than 11 for hour, it stays in the AM form <-- DH
-
-				else if (randomHour == 12) {
+				else if ( randomHour == 12){
 
 					if (randomMinute < 10)
 						strBuilder.append(" " + randomHour + ":0" + randomMinute + "PM");
@@ -65,12 +71,9 @@ public class AddressGenerator {
 						strBuilder.append(" " + randomHour + ":" + randomMinute + "PM");
 				}
 
-				// Above Code ^ if 12 is the hour, it appends PM form for afternoon <-- DH
-
 				else {
 					convertedTime = randomHour - 12;
-					// Debug line >
-					// System.out.println(convertedTime);
+					//System.out.println(convertedTime);
 					if (randomMinute < 10)
 						strBuilder.append(" " + convertedTime + ":0" + randomMinute + "PM");
 					else
@@ -78,8 +81,6 @@ public class AddressGenerator {
 
 				}
 
-				// Above Code ^ if greater than 12 for the hour, it converts time to the 12 hour
-				// PM form for afternoon <-- DH
 
 				if(randomChip == 1){
 					strBuilder.append(" Order: Chip: " + randomChip);
@@ -119,7 +120,15 @@ public class AddressGenerator {
 
 				// sort of spaghetti code, but it works ^ DH
 
+
+
+
+
+
+
 				out.print(strBuilder);
+
+
 
 				count++;
 				out.println();
@@ -129,5 +138,6 @@ public class AddressGenerator {
 		}
 		out.close();
 	}
-
 }
+
+

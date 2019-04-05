@@ -41,9 +41,9 @@ public class AddressGenerator {
 				streetNumber = rand.nextInt((20 - 1) + 1);
 				if(streetNumber == 0)
 					streetNumber+=1;
-				//System.out.println(streetNumber);
-				//Fixes our issue with Street Number printing zero - DH
-				strBuilder.append(" "+streetNumber+" Street");
+					//System.out.println(streetNumber);
+					//Fixes our issue with Street Number printing zero - DH
+					strBuilder.append(" "+streetNumber+" Street");
 
 
 				strBuilder.append(" " + streetNumber + " Street");

@@ -20,6 +20,9 @@ public class AddressGenerator {
 				blockNum = rand.nextInt((200 - 1) + 1);
 				randomHour = rand.nextInt((18 - 10) + 1) + 10;
 				randomMinute = rand.nextInt((59 - 0) + 1) + 0;
+				randomChip = rand.nextInt((2 - 0) + 1) + 1;
+				randomDrink = rand.nextInt((2 - 0) + 1) + 1;
+				randomSandwich = rand.nextInt((2 - 0) + 1) + 1;
 				// Creating Random Hours and Random Minutes < -- DH
 
 				// System.out.println(blockNum);
@@ -36,6 +39,13 @@ public class AddressGenerator {
 					strBuilder.append(" East");
 
 				streetNumber = rand.nextInt((20 - 1) + 1);
+				if(streetNumber == 0)
+					streetNumber+=1;
+				//System.out.println(streetNumber);
+				//Fixes our issue with Street Number printing zero - DH
+				strBuilder.append(" "+streetNumber+" Street");
+
+
 				strBuilder.append(" " + streetNumber + " Street");
 
 				if (randomHour <= 11) {

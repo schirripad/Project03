@@ -39,6 +39,7 @@ public class MapWindow extends JFrame {
 		setTitle("Sandwich Truck Simulation");
 		GridPanel grid = new GridPanel(truck, hoodSize);
 		grid.setSize(400, 400);
+		grid.setDoubleBuffered(true);
 		add(grid);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

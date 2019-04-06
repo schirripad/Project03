@@ -6,9 +6,10 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 public class AddressGenerator {
-	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime, randomChip, randomDrink, randomSandwich;
+	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime,
+			randomChip, randomDrink, randomSandwich;
 
-	public static void generateAddresses() throws IOException {
+	public static void generateAddresses(int bound) throws IOException {
 		PrintWriter out = new PrintWriter(new File("addresses.txt"));
 		Random rand = new Random();
 
@@ -17,53 +18,48 @@ public class AddressGenerator {
 
 				StringBuilder strBuilder = new StringBuilder();
 
-				randomHour = rand.nextInt((18 - 10) + 1 ) + 10;
+				randomHour = rand.nextInt((18 - 10) + 1) + 10;
 				randomMinute = rand.nextInt((59 - 0) + 1) + 0;
 				randomChip = rand.nextInt((2 - 0) + 1) + 1;
 				randomDrink = rand.nextInt((2 - 0) + 1) + 1;
 				randomSandwich = rand.nextInt((2 - 0) + 1) + 1;
 
-
-				blockNum = rand.nextInt((200 - 1) + 1 );
-				if(blockNum  == 0){
+				blockNum = rand.nextInt(((bound * 10) - 1) + 1);
+				if (blockNum == 0) {
 					blockNum += 1;
 				}
-				//System.out.println(blockNum);
+				// System.out.println(blockNum);
 				houseNumber = (blockNum * 10);
 				System.out.println(houseNumber);
 
-				if((houseNumber % 100) != 0 && houseNumber != 1000){
+				if ((houseNumber % 100) != 0 && houseNumber != 1000) {
 					strBuilder.append(houseNumber);
-				}
-				else{
+				} else {
 					houseNumber = houseNumber + 10;
 					strBuilder.append(houseNumber);
 				}
 
-				streetDir = rand.nextInt((2-1) + 1);
-				//System.out.println(southEastNum);
-				if(streetDir == 0)
+				streetDir = rand.nextInt((2 - 1) + 1);
+				// System.out.println(southEastNum);
+				if (streetDir == 0)
 					strBuilder.append(" South");
 				else
 					strBuilder.append(" East");
 
+				streetNumber = rand.nextInt((bound - 1) + 1);
+				if (streetNumber == 0)
+					streetNumber += 1;
+				// System.out.println(streetNumber);
+				strBuilder.append(" " + streetNumber + " Street");
 
-
-
-				streetNumber = rand.nextInt((20 - 1) + 1);
-				if(streetNumber == 0)
-					streetNumber+=1;
-				//System.out.println(streetNumber);
-				strBuilder.append(" "+streetNumber+" Street");
-
-				if(randomHour <= 11) {
+				if (randomHour <= 11) {
 					if (randomMinute < 10)
 						strBuilder.append(" " + randomHour + ":0" + randomMinute + "AM");
 					else
 						strBuilder.append(" " + randomHour + ":" + randomMinute + "AM");
 				}
 
-				else if ( randomHour == 12){
+				else if (randomHour == 12) {
 
 					if (randomMinute < 10)
 						strBuilder.append(" " + randomHour + ":0" + randomMinute + "PM");
@@ -73,7 +69,7 @@ public class AddressGenerator {
 
 				else {
 					convertedTime = randomHour - 12;
-					//System.out.println(convertedTime);
+					// System.out.println(convertedTime);
 					if (randomMinute < 10)
 						strBuilder.append(" " + convertedTime + ":0" + randomMinute + "PM");
 					else
@@ -81,54 +77,45 @@ public class AddressGenerator {
 
 				}
 
-
-				if(randomChip == 1){
+				if (randomChip == 1) {
 					strBuilder.append(" Order: Chip: " + randomChip);
 				}
 
-				else if (randomChip == 2){
+				else if (randomChip == 2) {
 					strBuilder.append(" Order: Chip: " + randomChip);
 				}
 
-				else{
+				else {
 					strBuilder.append(" Order: Chip: " + randomChip);
 				}
 
-				if(randomDrink == 1){
+				if (randomDrink == 1) {
 					strBuilder.append(" Drink: " + randomDrink);
 				}
 
-				else if (randomDrink == 2){
+				else if (randomDrink == 2) {
 					strBuilder.append(" Drink: " + randomDrink);
 				}
 
-				else{
+				else {
 					strBuilder.append(" Drink: " + randomDrink);
 				}
 
-				if(randomSandwich == 1){
+				if (randomSandwich == 1) {
 					strBuilder.append(" Sandwich: " + randomSandwich);
 				}
 
-				else if (randomSandwich == 2){
+				else if (randomSandwich == 2) {
 					strBuilder.append(" Sandwich: " + randomSandwich);
 				}
 
-				else{
+				else {
 					strBuilder.append(" Sandwich: " + randomSandwich);
 				}
 
 				// sort of spaghetti code, but it works ^ DH
 
-
-
-
-
-
-
 				out.print(strBuilder);
-
-
 
 				count++;
 				out.println();
@@ -139,5 +126,3 @@ public class AddressGenerator {
 		out.close();
 	}
 }
-
-

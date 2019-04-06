@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
+import Simulation.food.Chip;
+import Simulation.food.Drink;
+import Simulation.food.Sandwich;
+
 public class AddressLoader {
 
 	public static PriorityQueue<Order> loadOrders(String fileName) throws IOException {
@@ -29,7 +33,7 @@ public class AddressLoader {
 			String[] addressParts = curLine.split(" ");
 
 			// If not all parts are accounted for, inform user and ignore line
-			if (addressParts.length < 5)
+			if (addressParts.length < 12)
 				System.out.println("Invalid address found!\n> " + curLine);
 			else {
 				int houseNum;
@@ -46,7 +50,7 @@ public class AddressLoader {
 						streetDir = StreetDirection.EAST;
 
 					// Parse time data
-					int hour, min;
+					int hour, min, numChips, numDrinks, numSandwich;
 					String[] time = addressParts[4].split(":");
 					try {
 						hour = Integer.parseInt(time[0]);
@@ -58,13 +62,19 @@ public class AddressLoader {
 						}
 						// Parse minute data, truncate AM/PM off of end
 						min = Integer.parseInt(time[1].substring(0, time[1].length() - 2));
+
+						// Parse Food data
+						numChips = Integer.parseInt(addressParts[7]);
+						numDrinks = Integer.parseInt(addressParts[9]);
+						numSandwich = Integer.parseInt(addressParts[11]);
 					} catch (NumberFormatException e) {
 						System.out.println("Invalid address found!\n>" + curLine);
 						continue;
 					}
 
 					// Create corresponding Address object, add it to 'addresses'
-					orders.add(new Order(new Address(houseNum, streetNum, streetDir), LocalTime.of(hour, min)));
+					orders.add(new Order(new Address(houseNum, streetNum, streetDir), LocalTime.of(hour, min),
+							new Chip(numChips), new Drink(numDrinks), new Sandwich(numSandwich)));
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid address found!\n>" + curLine);
 				}

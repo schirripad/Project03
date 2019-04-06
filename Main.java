@@ -1,9 +1,8 @@
 package Simulation;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.PriorityQueue;
-
-import Simulation.gui.MapWindow;
 
 /**
  * 
@@ -16,9 +15,10 @@ public class Main {
 	// TODO Add class headers
 
 	public static void main(String[] args) {
-		SandwichTruck t = new SandwichTruck(SandwichTruck.distribtutionCenter);
+		SandwichTruck t = new SandwichTruck(new Address(510, 5, StreetDirection.EAST));
+		t.setNeighborHoodSize(new Rectangle(10, 10));
 		try {
-			AddressGenerator.generateAddresses();
+			AddressGenerator.generateAddresses(10);
 
 			PriorityQueue<Order> orders = AddressLoader.loadOrders("addresses.txt");
 			for (Order a : orders) {

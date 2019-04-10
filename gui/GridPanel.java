@@ -14,6 +14,7 @@ import Simulation.Address;
 import Simulation.Instruction;
 import Simulation.Order;
 import Simulation.RouteTo;
+import Simulation.Router;
 import Simulation.SandwichTruck;
 import Simulation.StreetDirection;
 
@@ -30,7 +31,7 @@ public class GridPanel extends JPanel {
 	private int hoodHeight = 20, hoodWidth = 20;
 	private int lineDistance = 1;
 	int houseDistance = lineDistance / 9;
-	private RouteTo route;
+	private Router route;
 	private int distanceToNext = 0;
 	private Dimension next;
 
@@ -71,6 +72,7 @@ public class GridPanel extends JPanel {
 			lineDistance = this.getWidth() / (hoodWidth - 2);
 		else
 			lineDistance = this.getHeight() / (hoodHeight - 2);
+		houseDistance = lineDistance / 9;
 		// Make XY Ambiguous
 		for (int i = 0; i < hoodHeight; i++) {
 			int currentXY = i * lineDistance;
@@ -109,15 +111,7 @@ public class GridPanel extends JPanel {
 		return new Dimension(blockX - lineDistance, blockY - lineDistance);
 	}
 
-	private Address getXYAddress(Dimension d, StreetDirection s) {
-		if (s == StreetDirection.EAST) {
-			return new Address((d.width / (hoodWidth * houseDistance)), d.height / lineDistance, s);
-		} else {
-			return new Address(d.height / lineDistance, d.width, s);
-		}
-	}
-
-	private void drawRoute(Graphics2D g) {
+	private void drawRouteOld(Graphics2D g) {
 		Address next = t.peekNextRouteInstruction().getAddress();
 		Address cur = t.getCurrentAddress();
 
@@ -165,6 +159,7 @@ public class GridPanel extends JPanel {
 			if (instructions != null && instructions.size() != 0)
 				tmp = instructions.get(0);
 			populateRouteNew(route);
+			instructionCounter = instructions.get(0).getTime();
 			if (tmp != null)
 				instructions.add(0, tmp);
 		}
@@ -182,7 +177,11 @@ public class GridPanel extends JPanel {
 		System.out.println(t.getCurrentAddress());
 	}
 
-	private void populateRoute(RouteTo r) {
+	public int getInstructionTime() {
+		return instructionCounter;
+	}
+
+	private void populateRoute(Router r) {
 		Instruction i = t.getNextRouteInstruction();
 		Dimension iXY = getAddressXY(i.getAddress());
 		Dimension tXY = getAddressXY(t.getCurrentAddress());
@@ -232,7 +231,7 @@ public class GridPanel extends JPanel {
 		}
 	}
 
-	private void populateRouteNew(RouteTo r) {
+	private void populateRouteNew(Router r) {
 		// Generate route using houseNumber difference
 
 		// Get Route instruction
@@ -345,5 +344,12 @@ public class GridPanel extends JPanel {
 			Dimension xy = getAddressXY(o.getAddress());
 			g.fillOval(xy.width, xy.height, 5, 5);
 		}
+	}
+
+	private void drawRoute(Graphics2D g) {
+		Instruction next = t.getNextRouteInstruction();
+		Address cur = t.getCurrentAddress();
+		Address nextAdd = next.getAddress();
+
 	}
 }

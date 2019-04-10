@@ -3,7 +3,7 @@ package Simulation;
 /**
  * Streets, representative of their respective titles, SOUTH, EAST
  * 
- * @author schirripad@moravian.edu
+ * @author Daniel
  *
  */
 public enum StreetDirection {

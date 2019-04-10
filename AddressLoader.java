@@ -14,6 +14,11 @@ import Simulation.food.Chip;
 import Simulation.food.Drink;
 import Simulation.food.Sandwich;
 
+/**
+ * 
+ * @author Daniel
+ *
+ */
 public class AddressLoader {
 
 	public static PriorityQueue<Order> loadOrders(String fileName) throws IOException {

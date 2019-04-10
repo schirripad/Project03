@@ -1,5 +1,10 @@
 package Simulation;
 
+/**
+ * 
+ * @author Daniel
+ *
+ */
 public class Instruction {
 	private Address address;
 	private int timeValue;

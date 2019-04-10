@@ -3,7 +3,7 @@ package Simulation;
 import java.time.LocalTime;
 
 /**
- * Contains data representing a customers order, including their addressm, and
+ * Contains data representing a customers order, including their address, and
  * the time that the order was placed
  * 
  * @author Daniel

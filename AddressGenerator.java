@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
 
+/**
+ * 
+ * @author Dylan
+ *
+ */
 public class AddressGenerator {
 	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime,
 			randomChip, randomDrink, randomSandwich;

@@ -1,22 +1,22 @@
 package Simulation;
 
-import java.time.LocalTime;
 /**
  * 
- * @author schirripad@moravian.edu
+ * @author Daniel
  *
  */
 public class Address implements Comparable<Address> {
 
 	private int houseNumber, streetNumber;
 	private StreetDirection streetDir;
-//	private LocalTime time;
+	// private LocalTime time;
 
 	public Address(int houseNumber, int streetNum, StreetDirection street) {
 		this.houseNumber = houseNumber;
 		this.streetNumber = streetNum;
 		this.streetDir = street;
 	}
+
 	public Address(int houseNumber, int streetNum) {
 		this.houseNumber = houseNumber;
 		this.streetNumber = streetNum;

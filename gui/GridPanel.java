@@ -60,7 +60,8 @@ public class GridPanel extends JPanel {
 		Graphics2D g = (Graphics2D) g1;
 		drawGrid(g);
 		drawAddresses(g);
-		drawRouteNew(g);
+		if (instructionCounter == 0)
+			drawRoute(g);
 		drawTruck(g);
 	}
 
@@ -351,5 +352,19 @@ public class GridPanel extends JPanel {
 		Address cur = t.getCurrentAddress();
 		Address nextAdd = next.getAddress();
 
+		if (cur.getStreetDirection() != nextAdd.getStreetDirection()) {
+			instructionCounter = next.getTime();
+			// This means that we are turning
+			t.setAddress(nextAdd);
+			return;
+		}
+		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {
+			// DO nothing, the method t.getNextRouteInstruction() will increment the truck
+			// to the next instruction
+		} else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
+			t.setAddress(new Address(cur.getHouseNumber() - 1, cur.getStreetNumber(), cur.getStreetDirection()));
+		} else {
+			t.setAddress(new Address(cur.getHouseNumber() + 1, cur.getStreetNumber(), cur.getStreetDirection()));
+		}
 	}
 }

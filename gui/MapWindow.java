@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import Simulation.Clock;
 import Simulation.SandwichTruck;
 
 /**
@@ -47,6 +48,7 @@ public class MapWindow extends JFrame {
 		Timer repaintTimer = new Timer(0, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				grid.repaint();
+				Clock.updateTime();
 			}
 		});
 

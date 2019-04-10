@@ -348,9 +348,15 @@ public class GridPanel extends JPanel {
 	}
 
 	private void drawRoute(Graphics2D g) {
-		Instruction next = t.getNextRouteInstruction();
+		Instruction next = t.peekNextRouteInstruction();
 		Address cur = t.getCurrentAddress();
 		Address nextAdd = next.getAddress();
+
+		if (cur.getHouseNumber() == nextAdd.getHouseNumber() && cur.getStreetNumber() == nextAdd.getStreetNumber()
+				&& cur.getStreetDirection() == nextAdd.getStreetDirection()) {
+			next = t.getNextRouteInstruction();
+			nextAdd = next.getAddress();
+		}
 
 		if (cur.getStreetDirection() != nextAdd.getStreetDirection()) {
 			instructionCounter = next.getTime();

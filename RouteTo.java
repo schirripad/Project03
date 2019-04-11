@@ -16,7 +16,7 @@ public class RouteTo implements Router{
 
 	public List<Instruction> instructions;
 	public static double routeLength = 0;
-	protected static int truckHeading = 0;  // 1; (←)South, 2; East(↓), 3; North(→), 4; West(↑)
+	protected static int truckHeading=2;  // 1; (←)South, 2; East(↓), 3; North(→), 4; West(↑)
 	Address truck;
 	Address a;
 
@@ -29,11 +29,11 @@ public class RouteTo implements Router{
            test the code by setting a truck address and the address that truck going to
         */
 
-		//	truck= new Address(940, 14, StreetDirection.SOUTH);
-		//a = new Address(1270, 14, StreetDirection.EAST);
+		//truck= new Address(940, 14, StreetDirection.EAST);
+		//a = new Address(840, 5, StreetDirection.SOUTH);
 
 		if (truck==SandwichTruck.distribtutionCenter)
-			truckHeading = 2;
+			truckHeading=2;
 		else
 			truckHeading = t.getHeading();
 
@@ -55,8 +55,11 @@ public class RouteTo implements Router{
 
 			// Good!
 			if ((truck.getStreetDirection() == StreetDirection.SOUTH && truckHeading == 1 && a.getHouseNumber() > truck.getHouseNumber())) {
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST), 2000));
-				instructions.add(new Instruction(new Address(corner, truck.getStreetNumber() - 1, StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address(corner,truck.getStreetNumber()  , StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST)));
+
+				instructions.add(new Instruction(new Address((truck.getStreetNumber() - 1)*100,corner/100,  StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address(corner, truck.getStreetNumber() - 1, StreetDirection.SOUTH)));
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 
 				truck = new Address(corner, truck.getStreetNumber() - 1, StreetDirection.SOUTH);
@@ -64,8 +67,11 @@ public class RouteTo implements Router{
 			}
 			// Good!
 			else if ((truck.getStreetDirection() == StreetDirection.SOUTH && truckHeading == 3 && a.getHouseNumber() < truck.getHouseNumber())) {
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.EAST), 2000));
-				instructions.add(new Instruction(new Address(corner + 100, truck.getStreetNumber() + 1, StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address((corner + 100),truck.getStreetNumber(), StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.EAST)));
+
+				instructions.add(new Instruction(new Address((truck.getStreetNumber() + 1)*100,(corner + 100)/100,  StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address(corner + 100, truck.getStreetNumber() + 1, StreetDirection.SOUTH)));
 				truckHeading = 1;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 
@@ -73,8 +79,11 @@ public class RouteTo implements Router{
 			}
 			// Good!
 			else if ((truck.getStreetDirection() == StreetDirection.EAST && truckHeading == 2 && a.getHouseNumber() < truck.getHouseNumber())) {
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.SOUTH), 2000));
-				instructions.add(new Instruction(new Address(corner + 100, truck.getStreetNumber() - 1, StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address( (corner + 100) ,truck.getStreetNumber(), StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.SOUTH)));
+
+				instructions.add(new Instruction(new Address( (truck.getStreetNumber() - 1)*100,(corner + 100)/100, StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address(corner + 100, truck.getStreetNumber() - 1, StreetDirection.EAST)));
 				truckHeading = 4;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address(corner + 100, truck.getStreetNumber() - 1, StreetDirection.EAST);
@@ -82,7 +91,10 @@ public class RouteTo implements Router{
 			}
 			// Good!
 			else if ((truck.getStreetDirection() == StreetDirection.EAST && truckHeading == 4 && a.getHouseNumber() > truck.getHouseNumber())) {
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address( corner ,truck.getStreetNumber() , StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.SOUTH)));
+
+				instructions.add(new Instruction(new Address((truck.getStreetNumber() + 1)*100,corner/100,  StreetDirection.SOUTH), 2000));
 				instructions.add(new Instruction(new Address(corner, truck.getStreetNumber() + 1, StreetDirection.EAST), 2000));
 				truckHeading = 2;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
@@ -97,7 +109,8 @@ public class RouteTo implements Router{
 			if (truckHeading == 4 && truck.getHouseNumber() - (truck.getHouseNumber() % 100) < a.getStreetNumber() * 100) {
 
 				int corner = truck.getHouseNumber() - (truck.getHouseNumber() % 100);
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address(corner,truck.getStreetNumber()  , StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.SOUTH)));
 				truckHeading = 3;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.SOUTH);
@@ -106,7 +119,8 @@ public class RouteTo implements Router{
 			else if (truckHeading == 2 && truck.getHouseNumber() - ((truck.getHouseNumber() + 100) % 100) > a.getStreetNumber() * 100) {
 
 				int corner = (truck.getHouseNumber()) - (truck.getHouseNumber() % 100);
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.SOUTH), 4000));
+				instructions.add(new Instruction(new Address( (corner + 100) ,truck.getStreetNumber(), StreetDirection.EAST), 4000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.SOUTH)));
 				truckHeading = 3;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address(truck.getStreetNumber() * 100, (corner + 100) / 100, StreetDirection.SOUTH);
@@ -116,13 +130,14 @@ public class RouteTo implements Router{
 		if (truck.getStreetDirection() != a.getStreetDirection() && truck.getStreetDirection() == StreetDirection.SOUTH) {
 			int corner = (truck.getHouseNumber()) - (truck.getHouseNumber() % 100);
 			if (truckHeading == 3 && truck.getHouseNumber() - (truck.getHouseNumber() % 100) > a.getStreetNumber() * 100) {
-				instructions.add(new Instruction(new Address((truck.getStreetNumber() * 100), (corner + 100) / 100, StreetDirection.EAST), 2000));
+				instructions.add(new Instruction(new Address( (corner + 100) ,truck.getStreetNumber(), StreetDirection.SOUTH), 2000));
+				instructions.add(new Instruction(new Address((truck.getStreetNumber() * 100), (corner + 100) / 100, StreetDirection.EAST)));
 				truckHeading = 2;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address((truck.getStreetNumber() * 100), (corner + 100) / 100, StreetDirection.EAST);
 			} else if (truckHeading == 1 && truck.getHouseNumber() - (truck.getHouseNumber() % 100) < a.getStreetNumber() * 100) {
-
-				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST), 4000));
+				instructions.add(new Instruction(new Address( corner,truck.getStreetNumber() * 100, StreetDirection.SOUTH), 4000));
+				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST)));
 				truckHeading = 2;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST);
@@ -154,10 +169,12 @@ public class RouteTo implements Router{
 
 							corner = truckHouseNum - (truckHouseNum % 100);
 							if (sNum < truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(corner,truckStreetNum ,StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 4;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address(corner,truckStreetNum,StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 2;
 							}
 							routeLength += Math.abs(corner - truckHouseNum);
@@ -166,10 +183,12 @@ public class RouteTo implements Router{
 
 							corner = hNum - (hNum % 100);
 							if (sNum < truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum , StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 4;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(corner,truckStreetNum , StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 2;
 							}
 							routeLength += Math.abs(truckHouseNum - corner);
@@ -183,10 +202,12 @@ public class RouteTo implements Router{
 
 							corner = hNum - (hNum % 100);
 							if (sNum < truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(corner,truckStreetNum , StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 4;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address( corner,truckStreetNum , StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.EAST)));
 								truckHeading = 2;
 							}
 							//review route length
@@ -195,10 +216,12 @@ public class RouteTo implements Router{
 						} else if (truckHeading == 3) {//North(→)
 							corner = (truckHouseNum) - (truckHouseNum % 100);
 							if (sNum < truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address( (corner + 100),truckStreetNum, StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.EAST)));
 								truckHeading = 4;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address( (corner + 100) ,truckStreetNum, StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.EAST)));
 								truckHeading = 2;
 
 							}
@@ -224,23 +247,28 @@ public class RouteTo implements Router{
 							///
 							corner = truckHouseNum - (truckHouseNum % 100);
 							if (sNum > truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address(corner,truckStreetNum , StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 3;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 1;
 							}// see here
 							//truckHeading = (truck.getHouseNumber() > a.getHouseNumber()) ? 2:4;
 							routeLength += Math.abs(corner - truckHouseNum);
 							truck = (new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH));
+
 						} else if (truckHeading == 2) {//2; East(↓)
 							corner = hNum - (hNum % 100);
 
 							if (sNum > truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 3;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 1;
 								//truck= new Address(truckStreetNum*100,corner/100, StreetDirection.SOUTH);
 							}
@@ -254,10 +282,12 @@ public class RouteTo implements Router{
 						if (truckHeading == 4) {// West(↑)
 							corner = hNum - (hNum % 100);
 							if (sNum > truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 3;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address( corner ,truckStreetNum , StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, corner / 100, StreetDirection.SOUTH)));
 								truckHeading = 1;
 							}
 							routeLength += Math.abs(corner - truckHouseNum);
@@ -265,10 +295,12 @@ public class RouteTo implements Router{
 						} else if (truckHeading == 2) {//2; East(↓)
 							corner = (truckHouseNum) - (truckHouseNum % 100);
 							if (sNum > truckStreetNum) {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.SOUTH), 4000));
+								instructions.add(new Instruction(new Address( (corner + 100),truckStreetNum, StreetDirection.EAST), 4000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.SOUTH)));
 								truckHeading = 3;
 							} else {
-								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.SOUTH), 2000));
+								instructions.add(new Instruction(new Address( (corner + 100),truckStreetNum, StreetDirection.EAST), 2000));
+								instructions.add(new Instruction(new Address(truckStreetNum * 100, (corner + 100) / 100, StreetDirection.SOUTH)));
 								truckHeading = 1;
 							}
 							routeLength += Math.abs(corner - truckHouseNum);
@@ -291,16 +323,23 @@ public class RouteTo implements Router{
 					y1 = truckStreetNum;
 					if (truckHeading == 1) {
 
-						if (hNum > y1 * 100)
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST), 4000));
-						else
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST), 2000));
+						if (hNum > y1 * 100) {
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.SOUTH), 4000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST)));
+						}
+						else{
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.SOUTH), 2000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST)));
+						}
 					} else if (truckHeading == 3) {
 
-						if (hNum > y1 * 100)
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST), 2000));
+						if (hNum > y1 * 100) {
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.SOUTH), 2000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST)));
+						}
 						else {
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST), 4000));
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.SOUTH), 4000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.EAST)));
 						}
 					}
 					routeLength += Math.abs(x2 * 100 - truckHouseNum);
@@ -311,18 +350,27 @@ public class RouteTo implements Router{
 					y1 = truckStreetNum;
 					if (truckHeading == 2) {
 						//////// now here
-						if (hNum > y1 * 100)
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH), 4000));
-						else
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH), 2000));
+						if (hNum > y1 * 100) {
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.EAST), 4000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH)));
+
+						}
+						else{
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.EAST), 2000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH)));
+						}
 					} else if (truckHeading == 4) {
 
-						if (hNum > y1 * 100)
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH), 2000));
+						if (hNum > y1 * 100) {
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.EAST), 2000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH)));
+						}
 						else {
-							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH), 4000));
+							instructions.add(new Instruction(new Address(x2 * 100, y1, StreetDirection.EAST), 4000));
+							instructions.add(new Instruction(new Address(y1 * 100, x2, StreetDirection.SOUTH)));
 						}
 					}
+
 					routeLength += Math.abs(x2 * 100 - truckHouseNum);
 					truck = (new Address(y1 * 100, x2, StreetDirection.SOUTH));
 
@@ -340,7 +388,9 @@ public class RouteTo implements Router{
 			instructions.add(new Instruction(a, 1000,truckHeading));
 		}
 		routeLength += Math.abs(truck.getHouseNumber() - a.getHouseNumber());
-		t.setAddress(a);
+		t.setHeading(truckHeading);
+		t.setAddress(o.getAddress());
+		// new SandwichTruck(a,truckHeading);
 	}
 
 

@@ -61,10 +61,10 @@ public class GridPanel extends JPanel {
 		drawGrid(g);
 		drawAddresses(g);
 		drawTruck(g);
-		//if (instructionCounter == 0)
-			drawRoute(g);
-		//else
-		//	instructionCounter--;
+		// if (instructionCounter == 0)
+		drawRoute(g);
+		// else
+		// instructionCounter--;
 	}
 
 	private void drawGrid(Graphics2D g) {
@@ -101,7 +101,7 @@ public class GridPanel extends JPanel {
 		// Nine houses on a block, so in between two streets there are nine available
 		// spots
 		int blockX, blockY;
-		if (a.getStreetDirection() == StreetDirection.EAST) {
+		if (a.getStreetDirection() == StreetDirection.SOUTH) {
 			// Y value is street number, house is X
 			blockY = a.getStreetNumber() * lineDistance;
 			blockX = ((a.getHouseNumber() / 100) * lineDistance) - ((a.getHouseNumber() % 100) * houseDistance);
@@ -114,6 +114,7 @@ public class GridPanel extends JPanel {
 		return new Dimension(blockX - lineDistance, blockY - lineDistance);
 	}
 
+	@Deprecated
 	private void drawRouteOld(Graphics2D g) {
 		Address next = t.peekNextRouteInstruction().getAddress();
 		Address cur = t.getCurrentAddress();
@@ -153,6 +154,7 @@ public class GridPanel extends JPanel {
 		// new turning point
 	}
 
+	@Deprecated
 	public void drawRouteNew(Graphics2D g) {
 		if (route == null || route.getRoute().isEmpty()) {
 			route = (RouteTo) t.nextRoute();
@@ -184,6 +186,7 @@ public class GridPanel extends JPanel {
 		return instructionCounter;
 	}
 
+	@Deprecated
 	private void populateRoute(Router r) {
 		Instruction i = t.getNextRouteInstruction();
 		Dimension iXY = getAddressXY(i.getAddress());
@@ -234,6 +237,7 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	@Deprecated
 	private void populateRouteNew(Router r) {
 		// Generate route using houseNumber difference
 
@@ -297,6 +301,7 @@ public class GridPanel extends JPanel {
 	}
 
 	// Move truck based on XY coordinates rather than address
+	@Deprecated
 	public void drawRouteEvenNewer(Graphics2D g) {
 		if (route == null || route.getRoute().isEmpty()) {
 			route = (RouteTo) t.nextRoute();
@@ -354,10 +359,13 @@ public class GridPanel extends JPanel {
 		Address cur = t.getCurrentAddress();
 		Address nextAdd = next.getAddress();
 
+		System.out.println(cur);
+
 		if (cur.getHouseNumber() == nextAdd.getHouseNumber() && cur.getStreetNumber() == nextAdd.getStreetNumber()
 				&& cur.getStreetDirection() == nextAdd.getStreetDirection()) {
 			next = t.getNextRouteInstruction();
 			nextAdd = next.getAddress();
+			System.out.println("Turn");
 		}
 
 		if (cur.getStreetDirection() != nextAdd.getStreetDirection()) {
@@ -370,9 +378,9 @@ public class GridPanel extends JPanel {
 			// DO nothing, the method t.getNextRouteInstruction() will increment the truck
 			// to the next instruction
 		} else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
-			t.setAddress(new Address(cur.getHouseNumber() - 1, cur.getStreetNumber(), cur.getStreetDirection()));
+			t.setAddress(new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection()));
 		} else {
-			t.setAddress(new Address(cur.getHouseNumber() + 1, cur.getStreetNumber(), cur.getStreetDirection()));
+			t.setAddress(new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection()));
 		}
 	}
 }

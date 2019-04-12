@@ -15,10 +15,10 @@ public class Main {
 	// TODO Add class headers
 
 	public static void main(String[] args) {
-		SandwichTruck t = new SandwichTruck(new Address(510, 5, StreetDirection.EAST));
-		t.setNeighborHoodSize(new Rectangle(10, 10));
+		SandwichTruck t = new SandwichTruck(new Address(910, 9, StreetDirection.SOUTH));
+		t.setNeighborHoodSize(new Rectangle(20, 20));
 		try {
-			AddressGenerator.generateAddresses(10);
+			AddressGenerator.generateAddresses(20);
 
 			PriorityQueue<Order> orders = AddressLoader.loadOrders("addresses.txt");
 			for (Order a : orders) {

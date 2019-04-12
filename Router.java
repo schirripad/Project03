@@ -3,6 +3,7 @@ package Simulation;
 import java.util.List;
 
 /**
+ * Interface used to define routing strategies
  * 
  * @author Daniel
  *

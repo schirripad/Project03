@@ -1,6 +1,8 @@
 package Simulation;
 
 /**
+ * Contains information concerning the proper execution of a route, including
+ * turns and times
  * 
  * @author Daniel
  *
@@ -13,6 +15,11 @@ public class Instruction {
 	public Instruction(Address goTo, int time) {
 		this.address = goTo;
 		this.timeValue = time;
+	}
+
+	public Instruction(Address goTo) {
+		this.address = goTo;
+		this.timeValue = 0;
 	}
 
 	public Instruction(Address goTo, int time, int truckHeading) {

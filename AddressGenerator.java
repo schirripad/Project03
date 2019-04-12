@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 /**
+ * Creates random sets of Orders and exports them to a file entitled
+ * 'addresses.txt'
  * 
  * @author Dylan
  *

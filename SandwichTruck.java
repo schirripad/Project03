@@ -13,6 +13,7 @@ import Simulation.gui.MapWindow;
  */
 public class SandwichTruck {
 	public static final Address distribtutionCenter = new Address(510, 5, StreetDirection.EAST);
+	public static final int truckSpeed = 30;
 
 	private Address curAddress;
 	private Router curRoute;
@@ -57,8 +58,8 @@ public class SandwichTruck {
 	}
 
 	public Router nextRoute() {
-		System.out.println("NEXT");
 		curOrder = getNextOrder();
+		System.out.println("NEXT");
 		curRoute = new RouteTo(curOrder, new SandwichTruck(this.getCurrentAddress()));
 		System.out.println("Route: ");
 		for (Instruction a : curRoute.getRoute()) {
@@ -78,7 +79,7 @@ public class SandwichTruck {
 
 	public Instruction getNextRouteInstruction() {
 		if (curRoute == null) {
-			curRoute = new RouteTo(getNextOrder(), new SandwichTruck(this.getCurrentAddress(), truckHeading));
+			nextRoute();
 		}
 		Instruction next;
 		if (curRoute.getRoute().size() == 1) {
@@ -91,9 +92,13 @@ public class SandwichTruck {
 		return next;
 	}
 
+	public void addRouteInstruction(Instruction i, int index) {
+		curRoute.getRoute().add(index, i);
+	}
+
 	public Instruction peekNextRouteInstruction() {
 		if (curRoute == null) {
-			curRoute = new RouteTo(getNextOrder(), new SandwichTruck(this.getCurrentAddress(), truckHeading));
+			nextRoute();
 		}
 		return curRoute.getRoute().get(0);
 	}

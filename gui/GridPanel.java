@@ -60,9 +60,11 @@ public class GridPanel extends JPanel {
 		Graphics2D g = (Graphics2D) g1;
 		drawGrid(g);
 		drawAddresses(g);
-		if (instructionCounter == 0)
-			drawRoute(g);
 		drawTruck(g);
+		//if (instructionCounter == 0)
+			drawRoute(g);
+		//else
+		//	instructionCounter--;
 	}
 
 	private void drawGrid(Graphics2D g) {

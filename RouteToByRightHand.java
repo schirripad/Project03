@@ -503,12 +503,15 @@ public class RouteToByRightHand implements Router{
         if (instructions.size() != 1)
             instructions.remove(0);
     }
+<<<<<<< HEAD
 
     public double getTimeUnits(){
         timeUnits = (routeLength / 30);
         //Getting real time as the length is divided by 30MPH DH
         return  timeUnits;
     }
+=======
+>>>>>>> c62d14ded8f4ed7da63d7205e9ebaf5bee0c207a
     public int getTruckHeading(){return truckHeading;}
 
 }

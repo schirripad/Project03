@@ -16,8 +16,11 @@ public class RouteTo implements Router{
 
 	public List<Instruction> instructions = new LinkedList<>();;
 	public static double routeLength;
+<<<<<<< HEAD
 	public int unitsofTime;
 	public double timeUnits;
+=======
+>>>>>>> c62d14ded8f4ed7da63d7205e9ebaf5bee0c207a
 	public static int truckHeading=3;  // 1; (←)South, 2; East(↓), 3; North(→), 4; West(↑)
 	Address truck;
 	Address a;
@@ -409,7 +412,10 @@ public class RouteTo implements Router{
 			instructions.add(new Instruction(a, 1000,truckHeading));
 		}
 		routeLength += Math.abs(truck.getHouseNumber() - a.getHouseNumber());
+<<<<<<< HEAD
 		unitsofTime += 1;
+=======
+>>>>>>> c62d14ded8f4ed7da63d7205e9ebaf5bee0c207a
 		routeLength /= 100;
 		//System.out.println(routeLength);
 		t.setHeading(truckHeading);
@@ -438,6 +444,7 @@ public class RouteTo implements Router{
 			instructions.remove(0);
 
 	}
+<<<<<<< HEAD
 
 	public int getUnitsofTime(){
 	    return unitsofTime;
@@ -449,6 +456,9 @@ public class RouteTo implements Router{
         //Getting real time as the length is divided by 30MPH DH
         return  timeUnits;
     }
+=======
+	public int getTruckHeading(){return truckHeading;}
+>>>>>>> c62d14ded8f4ed7da63d7205e9ebaf5bee0c207a
 }
 
 

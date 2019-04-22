@@ -7,6 +7,9 @@ import java.util.List;
  * 
  * @author Daniel
  *
+ * add getTruckHeading method
+ * @author Riyad
+ *
  */
 public interface Router {
 
@@ -15,5 +18,7 @@ public interface Router {
 	public List<Instruction> getRoute();
 
 	public void removeFirstInstruction();
+
+	public int getTruckHeading();
 
 }

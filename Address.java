@@ -8,7 +8,7 @@ package Simulation;
 public class Address implements Comparable<Address> {
 
 	private int houseNumber, streetNumber;
-	private StreetDirection streetDir;
+	private Simulation.StreetDirection streetDir;
 	// private LocalTime time;
 
 	public Address(int houseNumber, int streetNum, StreetDirection street) {
@@ -60,8 +60,8 @@ public class Address implements Comparable<Address> {
 	@Override
 	public int compareTo(Address a) {
 		int aDis, thisDis;
-		aDis = a.distanceFrom(SandwichTruck.distribtutionCenter);
-		thisDis = this.distanceFrom(SandwichTruck.distribtutionCenter);
+		aDis = a.distanceFrom(SandwichTruck.distributionCenter);
+		thisDis = this.distanceFrom(SandwichTruck.distributionCenter);
 		if (thisDis > aDis) {
 			return 1;
 		} else if (thisDis < aDis)

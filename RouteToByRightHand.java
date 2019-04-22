@@ -31,7 +31,7 @@ public class RouteToByRightHand implements Router{
         //truck = new Address(640,7,StreetDirection.SOUTH);
         //a = new Address(640,8,StreetDirection.SOUTH);
 
-        if (truck==SandwichTruck.distribtutionCenter)
+        if (truck==SandwichTruck.distributionCenter)
             truckHeading = 2;
         else
             truckHeading = t.getHeading();
@@ -463,6 +463,8 @@ public class RouteToByRightHand implements Router{
         if (instructions.size() != 1)
             instructions.remove(0);
     }
+    public int getTruckHeading(){return truckHeading;}
+
 }
 
 

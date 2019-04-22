@@ -1,11 +1,9 @@
 package Simulation.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import javax.swing.JPanel;
@@ -22,7 +20,10 @@ import Simulation.StreetDirection;
  * Creates a grid that paints the truck and all addresses
  * 
  * @author Daniel
- * 
+ *
+ * bug solving some of the issues we have had with
+ * the simulation of the track movement and drawRoute method and drawAddresses method (paints the truck and all addresses)
+ * @author Riyad
  */
 public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -34,6 +35,9 @@ public class GridPanel extends JPanel {
 	private Router route;
 	private int distanceToNext = 0;
 	private Dimension next;
+	private List<Address> paintMe = new LinkedList<>();
+
+
 
 	private static int instructionCounter = 0;
 	private static ArrayList<Instruction> instructions;
@@ -60,6 +64,7 @@ public class GridPanel extends JPanel {
 		Graphics2D g = (Graphics2D) g1;
 		drawGrid(g);
 		drawAddresses(g);
+		drawDeliveredOrderAddress(g);
 		drawTruck(g);
 		// if (instructionCounter == 0)
 		drawRoute(g);
@@ -91,27 +96,34 @@ public class GridPanel extends JPanel {
 
 		// Get trucks x and y
 		Dimension curXY = getAddressXY(t.getCurrentAddress());
-
 		g.fillOval(curXY.width - 2, curXY.height - 2, 5, 5);
 		g.setColor(c);
 
+		// set truck distribution Center @author Riyad
+		Dimension disTruck = getAddressXY(t.distributionCenter);
+		g.setColor(Color.BLUE);
+		g.fillRect(disTruck.width,disTruck.height,5,5);
+
 	}
 
+	// fixed the bugs of setting the Dimension of an Address @author Riyad
 	private Dimension getAddressXY(Address a) {
 		// Nine houses on a block, so in between two streets there are nine available
 		// spots
 		int blockX, blockY;
-		if (a.getStreetDirection() == StreetDirection.SOUTH) {
+		if (a.getStreetDirection() == StreetDirection.EAST) {
 			// Y value is street number, house is X
-			blockY = a.getStreetNumber() * lineDistance;
-			blockX = ((a.getHouseNumber() / 100) * lineDistance) - ((a.getHouseNumber() % 100) * houseDistance);
+			blockY = a.getStreetNumber() *lineDistance;
+//			blockX = (((a.getHouseNumber())/100 *lineDistance))+((a.getHouseNumber() /100) + houseDistance);
+			blockX = ((a.getHouseNumber()/100) *lineDistance) + ((a.getHouseNumber()%100)/10)*houseDistance;
+
 		} else {
 			// X value is street number, house is Y
-			blockX = a.getStreetNumber() * lineDistance;
-			blockY = ((a.getHouseNumber() / 100) * lineDistance) - ((a.getHouseNumber() % 100) * houseDistance);
+			blockX = a.getStreetNumber() *lineDistance;
+			blockY = ((a.getHouseNumber()/100) *lineDistance) + ((a.getHouseNumber()%100)/10)*houseDistance;
 		}
 
-		return new Dimension(blockX - lineDistance, blockY - lineDistance);
+		return new Dimension(blockX, blockY);
 	}
 
 	@Deprecated
@@ -133,11 +145,11 @@ public class GridPanel extends JPanel {
 		if (next.getStreetDirection() == cur.getStreetDirection()) {
 			if (next.getHouseNumber() > cur.getHouseNumber()) {
 				// Add one to house number
-				Address a = new Address(cur.getHouseNumber() + 1, cur.getStreetNumber(), cur.getStreetDirection());
+				Address a = new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection());
 				t.setAddress(a);
 			} else if (next.getHouseNumber() < cur.getHouseNumber()) {
 				// Subtract one
-				Address a = new Address(cur.getHouseNumber() - 1, cur.getStreetNumber(), cur.getStreetDirection());
+				Address a = new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection());
 				t.setAddress(a);
 			} else {
 				Address a = new Address(cur.getStreetNumber() * 100 - 1, cur.getHouseNumber() / 100,
@@ -157,7 +169,7 @@ public class GridPanel extends JPanel {
 	@Deprecated
 	public void drawRouteNew(Graphics2D g) {
 		if (route == null || route.getRoute().isEmpty()) {
-			route = (RouteTo) t.nextRoute();
+			route = (RouteTo) t.allOrderRoute();
 		}
 		if (instructions == null || instructions.size() < 2) {
 			Instruction tmp = null;
@@ -220,7 +232,7 @@ public class GridPanel extends JPanel {
 							StreetDirection.SOUTH);
 				for (int nX = tXY.width; nX < iXY.width + 1; nX += houseDistance) {
 					ins.add(new Instruction(
-							new Address(tAdd.getHouseNumber() + 1, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
+							new Address(tAdd.getHouseNumber() + 10, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
 				}
 			} else {
 				if (tAdd.getStreetDirection() == StreetDirection.EAST)
@@ -228,7 +240,7 @@ public class GridPanel extends JPanel {
 							StreetDirection.SOUTH);
 				for (int nX = tXY.width; nX < iXY.width + 1; nX += houseDistance) {
 					ins.add(new Instruction(
-							new Address(tAdd.getHouseNumber() - 1, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
+							new Address(tAdd.getHouseNumber() - 10, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
 				}
 			}
 			instructions = ins;
@@ -304,7 +316,7 @@ public class GridPanel extends JPanel {
 	@Deprecated
 	public void drawRouteEvenNewer(Graphics2D g) {
 		if (route == null || route.getRoute().isEmpty()) {
-			route = (RouteTo) t.nextRoute();
+			route = (RouteTo) t.allOrderRoute();
 		}
 		Dimension cur = getAddressXY(t.getCurrentAddress());
 		Dimension intermediate = cur;
@@ -350,24 +362,25 @@ public class GridPanel extends JPanel {
 		PriorityQueue<Order> orders = t.getAllOrders();
 		for (Order o : orders) {
 			Dimension xy = getAddressXY(o.getAddress());
+			g.setColor(Color.DARK_GRAY);
 			g.fillOval(xy.width, xy.height, 5, 5);
 		}
 	}
 
+	//Fixed the bugs of the drawRoute that we had have in Sprint3. @author Riyad
 	private void drawRoute(Graphics2D g) {
 		Instruction next = t.peekNextRouteInstruction();
 		Address cur = t.getCurrentAddress();
 		Address nextAdd = next.getAddress();
-
-		System.out.println(cur);
+		PriorityQueue<Order> orders = t.getAllOrdersCopy();
+		//System.out.println(cur);
 
 		if (cur.getHouseNumber() == nextAdd.getHouseNumber() && cur.getStreetNumber() == nextAdd.getStreetNumber()
 				&& cur.getStreetDirection() == nextAdd.getStreetDirection()) {
-			next = t.getNextRouteInstruction();
-			nextAdd = next.getAddress();
-			System.out.println("Turn");
+				next = t.getNextRouteInstruction();
+				nextAdd = next.getAddress();
+				//System.out.println("Turn");
 		}
-
 		if (cur.getStreetDirection() != nextAdd.getStreetDirection()) {
 			instructionCounter = next.getTime();
 			// This means that we are turning
@@ -377,10 +390,35 @@ public class GridPanel extends JPanel {
 		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {
 			// DO nothing, the method t.getNextRouteInstruction() will increment the truck
 			// to the next instruction
-		} else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
+			if (t.getCurRoute().getRoute().size() == 1) {
+				paintMe.add(next.getAddress());
+				//System.out.println("I just.........: "+ nextAdd);
+			}
+			else {
+				for (Order i : orders) {
+					if (i.getAddress().equals(nextAdd)) {
+						paintMe.add(i.getAddress());
+						System.out.println("I just delivered the Order of : " + i.getAddress());
+					}
+				}
+			}
+		}
+		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {}
+
+		else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
 			t.setAddress(new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection()));
 		} else {
 			t.setAddress(new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection()));
 		}
+
+	}
+
+	// Add drawDeliveredOrderAddress to paint the visited Address @author Riyad
+	public void drawDeliveredOrderAddress(Graphics2D g){
+		g.setColor(Color.orange);
+			for (Address ii : paintMe){
+				Dimension iXY = getAddressXY(ii);
+				g.drawOval(iXY.width, iXY.height, 5, 5);
+			}
 	}
 }

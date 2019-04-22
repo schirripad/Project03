@@ -14,29 +14,30 @@ import java.util.*;
 //RouteTo
 public class RouteTo implements Router{
 
-	public List<Instruction> instructions;
-	public static double routeLength = 0;
-	protected static int truckHeading=2;  // 1; (←)South, 2; East(↓), 3; North(→), 4; West(↑)
+	public List<Instruction> instructions = new LinkedList<>();;
+	public static double routeLength;
+	public static int truckHeading=3;  // 1; (←)South, 2; East(↓), 3; North(→), 4; West(↑)
 	Address truck;
 	Address a;
+	int count;
+	double theRouteLength;
 
 
-	RouteTo(Order o, SandwichTruck t) {
+	RouteTo(Collection<Order> orderss, SandwichTruck t) {
 		truck = t.getCurrentAddress();
-		a = o.getAddress();
 
+		Iterator<Order> iterator = orderss.iterator();
+		while (iterator.hasNext())
+		{
+			Order o = iterator.next();
+			a = o.getAddress();
 		/*
            test the code by setting a truck address and the address that truck going to
         */
+		//truck= new Address(1220, 14, StreetDirection.EAST);
+		//a = new Address(240, 1, StreetDirection.EAST);
 
-		//truck= new Address(940, 14, StreetDirection.EAST);
-		//a = new Address(840, 5, StreetDirection.SOUTH);
-
-		if (truck==SandwichTruck.distribtutionCenter)
-			truckHeading=2;
-		else
-			truckHeading = t.getHeading();
-
+		truckHeading = t.getHeading();
 
 		int hNum;
 		int sNum;
@@ -44,10 +45,10 @@ public class RouteTo implements Router{
 		int truckHouseNum;
 		int truckStreetNum;
 		StreetDirection truckDir;
-		instructions = new LinkedList<>();
+		//instructions = new LinkedList<>();
 		boolean sameDirection;
 		boolean sameStreetNum = a.getStreetNumber() == truck.getStreetNumber();
-		//new HandleUturn(o,t);
+		//instructions.add(new Instruction(truck));
 
 		// Deal with the U-turn case in same street situation
 		if (a.getStreetDirection() == truck.getStreetDirection() && sameStreetNum) {
@@ -136,7 +137,7 @@ public class RouteTo implements Router{
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
 				truck = new Address((truck.getStreetNumber() * 100), (corner + 100) / 100, StreetDirection.EAST);
 			} else if (truckHeading == 1 && truck.getHouseNumber() - (truck.getHouseNumber() % 100) < a.getStreetNumber() * 100) {
-				instructions.add(new Instruction(new Address( corner,truck.getStreetNumber() * 100, StreetDirection.SOUTH), 4000));
+				instructions.add(new Instruction(new Address( corner,truck.getStreetNumber() , StreetDirection.SOUTH), 4000));
 				instructions.add(new Instruction(new Address(truck.getStreetNumber() * 100, corner / 100, StreetDirection.EAST)));
 				truckHeading = 2;
 				routeLength += Math.abs(truck.getHouseNumber() -corner);
@@ -157,10 +158,11 @@ public class RouteTo implements Router{
 
 
 			if (sameDirection) {
-				// more that two moves; eg:            *---
-				//                                         |
-				//                                         |
-				// corner, so now it is in 2 moves case -> ()------*
+				// Truck On East; eg:                *
+				//                                   |
+				//                                   ()------
+				//                                           |
+				//                                           *
 				int corner;
 				if (truckDir == StreetDirection.SOUTH) {
 					// if Address in the right side
@@ -234,12 +236,11 @@ public class RouteTo implements Router{
 					}
 
 				}
-				// Truck On East; eg:                *
-				//                                   |
-				//                                   |
-				//                                   ()------
-				//                                           |
-				//                                           *
+				// more that two moves; eg:            *---
+				//                                         |
+				//                                         |
+				// corner, so now it is in 2 moves case -> ()------*
+
 				else if (truckDir == StreetDirection.EAST) {
 					//  down side
 					if (hNum > truckHouseNum) {
@@ -388,15 +389,23 @@ public class RouteTo implements Router{
 			instructions.add(new Instruction(a, 1000,truckHeading));
 		}
 		routeLength += Math.abs(truck.getHouseNumber() - a.getHouseNumber());
+		routeLength /= 100;
+		//System.out.println(routeLength);
 		t.setHeading(truckHeading);
-		t.setAddress(o.getAddress());
-		// new SandwichTruck(a,truckHeading);
+		truck = (a);
+		count+=1;
+		theRouteLength+=routeLength;
+		//System.out.println(count);
+		//t.setAddress(a);
+		}
+		// make sure about it
+		t.setAddress(SandwichTruck.distributionCenter);
 	}
 
 
 
 	public double getRouteLength() {
-		return routeLength;
+		return theRouteLength;
 	}
 
 	public List<Instruction> getRoute() {
@@ -406,5 +415,10 @@ public class RouteTo implements Router{
 	public void removeFirstInstruction() {
 		if (instructions.size() != 1)
 			instructions.remove(0);
+
 	}
+	public int getTruckHeading(){return truckHeading;}
 }
+
+
+//$$$$$$$$$$$$$$$$

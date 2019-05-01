@@ -9,20 +9,21 @@ import java.util.Random;
  * Creates random sets of Orders and exports them to a file entitled
  * 'addresses.txt'
  * 
- * @author Dylan
+ * @author Dylan, Riyad
  *
  */
 public class AddressGenerator {
 	private static int blockNum, count, houseNumber, streetDir, streetNumber, randomHour, randomMinute, convertedTime,
 			randomChip, randomDrink, randomSandwich;
 
-	public static void generateAddresses(int bound) throws IOException {
+	//public static int howManyAdrs;
+
+	public static void generateAddresses(int bound,int howManyAddress) throws IOException {
 		PrintWriter out = new PrintWriter(new File("addresses.txt"));
 		Random rand = new Random();
 
-		while (count < 100) {
-		    // making 100 addresses
-			for (int i = 0; i < 100; i++) {
+		while (count < howManyAddress) {
+			for (int i = 0; i < howManyAddress; i++) {
 
 				StringBuilder strBuilder = new StringBuilder();
 
@@ -38,8 +39,7 @@ public class AddressGenerator {
 				}
 				// System.out.println(blockNum);
 				houseNumber = (blockNum * 10);
-				System.out.println(houseNumber);
-
+				//System.out.println(houseNumber);
 				//Generates the house number for the address DH
 
 				if ((houseNumber % 100) != 0 && houseNumber != 1000) {

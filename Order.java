@@ -14,7 +14,6 @@ public class Order implements Comparable<Order> {
 	private LocalTime time;
 	private Food[] food;
 
-	@Deprecated
 	public Order(Address address, LocalTime t) {
 		this.address = address;
 		this.time = t;

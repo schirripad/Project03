@@ -30,7 +30,7 @@ public class Main {
 				//System.out.println(a.getAddress().toString() + " at time " + a.getTime().toString());
 				t.addOrder(a);
 			}
-			
+
 			// The sandwich truck return to the distribution center after all deliveries are completed.
 			t.addOrder(new Order(SandwichTruck.distributionCenter, LocalTime.of(19,00,00)));
 			t.showAreaMap();

@@ -36,7 +36,7 @@ public class MapWindow extends JFrame {
 	}
 
 	private void init() {
-		setSize(400, 400);
+		setSize(420, 420);
 		setTitle("Sandwich Truck Simulation");
 		GridPanel grid = new GridPanel(truck, hoodSize);
 		grid.setSize(400, 400);
@@ -52,7 +52,7 @@ public class MapWindow extends JFrame {
 			}
 		});
 
-		repaintTimer.setDelay(500);
+		repaintTimer.setDelay(100);
 		repaintTimer.start();
 	}
 }

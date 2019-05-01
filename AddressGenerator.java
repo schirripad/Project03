@@ -21,6 +21,7 @@ public class AddressGenerator {
 		Random rand = new Random();
 
 		while (count < 100) {
+		    // making 100 addresses
 			for (int i = 0; i < 100; i++) {
 
 				StringBuilder strBuilder = new StringBuilder();
@@ -39,12 +40,17 @@ public class AddressGenerator {
 				houseNumber = (blockNum * 10);
 				System.out.println(houseNumber);
 
+				//Generates the house number for the address DH
+
 				if ((houseNumber % 100) != 0 && houseNumber != 1000) {
 					strBuilder.append(houseNumber);
 				} else {
 					houseNumber = houseNumber + 10;
 					strBuilder.append(houseNumber);
 				}
+
+				//If house number dived by 100 does not equal zero and does not equal 1000 then append it, we do not want
+				//houses on street corners DH
 
 				streetDir = rand.nextInt((2 - 1) + 1);
 				// System.out.println(southEastNum);
@@ -53,11 +59,15 @@ public class AddressGenerator {
 				else
 					strBuilder.append(" East");
 
+				//Simply makes it random South and random East DH
+
 				streetNumber = rand.nextInt((bound - 1) + 1);
 				if (streetNumber == 0)
 					streetNumber += 1;
 				// System.out.println(streetNumber);
 				strBuilder.append(" " + streetNumber + " Street");
+
+				//Gives you a random street number between 1 and 20 DH
 
 				if (randomHour <= 11) {
 					if (randomMinute < 10)
@@ -66,6 +76,8 @@ public class AddressGenerator {
 						strBuilder.append(" " + randomHour + ":" + randomMinute + "AM");
 				}
 
+				//Gives you a random hour between 1 and 11 am
+
 				else if (randomHour == 12) {
 
 					if (randomMinute < 10)
@@ -73,6 +85,8 @@ public class AddressGenerator {
 					else
 						strBuilder.append(" " + randomHour + ":" + randomMinute + "PM");
 				}
+
+				//At noon we switch to PM designation
 
 				else {
 					convertedTime = randomHour - 12;
@@ -83,6 +97,8 @@ public class AddressGenerator {
 						strBuilder.append(" " + convertedTime + ":" + randomMinute + "PM");
 
 				}
+
+				//Gives us random afternoon hours converted to normal 12 hour time
 
 				if (randomChip == 1) {
 					strBuilder.append(" Order: Chip: " + randomChip);
@@ -120,11 +136,14 @@ public class AddressGenerator {
 					strBuilder.append(" Sandwich: " + randomSandwich);
 				}
 
-				// sort of spaghetti code, but it works ^ DH
+				// Gives us a random order, of chip 1 thru 3, sandwich 1 thru 3, and random drink 1 thru 3.
 
 				out.print(strBuilder);
 
+
+
 				count++;
+				//Breaks the while loop when it reaches 100 random addresses DH
 				out.println();
 
 			}

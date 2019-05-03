@@ -85,9 +85,9 @@ public class GridPanel extends JPanel {
 		// Implement scaling in MapWindow? Make sure GridPanel is always a square
 		// relative to size of window
 		if (getWidth() < getHeight())
-			lineDistance = this.getWidth() / (hoodWidth - 2);
+			lineDistance = this.getWidth() / (hoodWidth );
 		else
-			lineDistance = this.getHeight() / (hoodHeight - 2);
+			lineDistance = this.getHeight() / (hoodHeight -1);
 		houseDistance = lineDistance / 9;
 		// Make XY Ambiguous
 		for (int i = 0; i < hoodHeight; i++) {
@@ -134,237 +134,11 @@ public class GridPanel extends JPanel {
 		return new Dimension(blockX, blockY);
 	}
 
-//	@Deprecated
-//	private void drawRouteOld(Graphics2D g) {
-//		Address next = t.peekNextRouteInstruction().getAddress();
-//		Address cur = t.getCurrentAddress();
-//
-//		System.out.println(
-//				"Going to: " + next.getHouseNumber() + " " + next.getStreetDirection() + " " + next.getStreetNumber());
-//
-//		System.out.println(
-//				"Coming from: " + cur.getHouseNumber() + " " + cur.getStreetDirection() + " " + cur.getStreetNumber());
-//
-//		if (next.getHouseNumber() == cur.getHouseNumber() && cur.getStreetNumber() == next.getStreetNumber()
-//				&& next.getStreetDirection() == cur.getStreetDirection()) {
-//			next = t.getNextRouteInstruction().getAddress();
-//		}
-//
-//		if (next.getStreetDirection() == cur.getStreetDirection()) {
-//			if (next.getHouseNumber() > cur.getHouseNumber()) {
-//				// Add one to house number
-//				Address a = new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection());
-//				t.setAddress(a);
-//			} else if (next.getHouseNumber() < cur.getHouseNumber()) {
-//				// Subtract one
-//				Address a = new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection());
-//				t.setAddress(a);
-//			} else {
-//				Address a = new Address(cur.getStreetNumber() * 100 - 1, cur.getHouseNumber() / 100,
-//						next.getStreetDirection());
-//				t.setAddress(a);
-//			}
-//		} else {
-//			Address a = new Address(cur.getStreetNumber() * 100, cur.getHouseNumber() / 100,
-//					(cur.getStreetDirection() == StreetDirection.SOUTH) ? StreetDirection.EAST : StreetDirection.SOUTH);
-//			t.setAddress(a);
-//		}
-//
-//		// TODO Use last intermediate address as turning point rather than calculating
-//		// new turning point
-//	}
-//
-//	@Deprecated
-//	public void drawRouteNew(Graphics2D g) {
-//		if (route == null || route.getRoute().isEmpty()) {
-//			route = (RouteTo) t.allOrderRoute();
-//		}
-//		if (instructions == null || instructions.size() < 2) {
-//			Instruction tmp = null;
-//			if (instructions != null && instructions.size() != 0)
-//				tmp = instructions.get(0);
-//			populateRouteNew(route);
-//			instructionCounter = instructions.get(0).getTime();
-//			if (tmp != null)
-//				instructions.add(0, tmp);
-//		}
-//		Color old = g.getColor();
-//		g.setColor(Color.BLUE);
-//		for (Instruction i : route.getRoute()) {
-//			Dimension iXY = getAddressXY(i.getAddress());
-//
-//			g.drawOval(iXY.width, iXY.height, 5, 5);
-//		}
-//		g.setColor(old);
-//
-//		t.setAddress(instructions.get(0).getAddress());
-//		instructions.remove(0);
-//		System.out.println(t.getCurrentAddress());
-//	}
 
 	public int getInstructionTime() {
 		return instructionCounter;
 	}
 
-//	@Deprecated
-//	private void populateRoute(Router r) {
-//		Instruction i = t.getNextRouteInstruction();
-//		Dimension iXY = getAddressXY(i.getAddress());
-//		Dimension tXY = getAddressXY(t.getCurrentAddress());
-//		Address tAdd = t.getCurrentAddress();
-//
-//		ArrayList<Instruction> ins = new ArrayList<Instruction>();
-//
-//		if (iXY.width == tXY.width) {
-//			if (iXY.height > tXY.height) {
-//				if (tAdd.getStreetDirection() == StreetDirection.EAST)
-//					tAdd = new Address(tAdd.getStreetNumber() * 100, tAdd.getHouseNumber() / 100,
-//							StreetDirection.SOUTH);
-//				for (int nX = tXY.height; nX < iXY.height + 1; nX += houseDistance) {
-//					ins.add(new Instruction(
-//							new Address(tAdd.getHouseNumber() + 1, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
-//				}
-//			} else {
-//				if (tAdd.getStreetDirection() == StreetDirection.SOUTH)
-//					tAdd = new Address(tAdd.getStreetNumber() * 100, tAdd.getHouseNumber() / 100, StreetDirection.EAST);
-//				for (int nX = tXY.width; nX < iXY.width + 1; nX += houseDistance) {
-//					ins.add(new Instruction(
-//							new Address(tAdd.getHouseNumber() - 1, tAdd.getStreetNumber(), StreetDirection.EAST), 1));
-//				}
-//			}
-//
-//		} else if (iXY.height == tXY.height) {
-//			if (iXY.width > tXY.width) {
-//				if (tAdd.getStreetDirection() == StreetDirection.EAST)
-//					tAdd = new Address(tAdd.getStreetNumber() * 100, tAdd.getHouseNumber() / 100,
-//							StreetDirection.SOUTH);
-//				for (int nX = tXY.width; nX < iXY.width + 1; nX += houseDistance) {
-//					ins.add(new Instruction(
-//							new Address(tAdd.getHouseNumber() + 10, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
-//				}
-//			} else {
-//				if (tAdd.getStreetDirection() == StreetDirection.EAST)
-//					tAdd = new Address(tAdd.getStreetNumber() * 100, tAdd.getHouseNumber() / 100,
-//							StreetDirection.SOUTH);
-//				for (int nX = tXY.width; nX < iXY.width + 1; nX += houseDistance) {
-//					ins.add(new Instruction(
-//							new Address(tAdd.getHouseNumber() - 10, tAdd.getStreetNumber(), StreetDirection.SOUTH), 1));
-//				}
-//			}
-//			instructions = ins;
-//		} else {
-//			System.out.println("ROUTE INVALID");
-//		}
-//	}
-
-//	@Deprecated
-//	private void populateRouteNew(Router r) {
-//		// Generate route using houseNumber difference
-//
-//		// Get Route instruction
-//		Instruction i = route.getRoute().get(0);
-//		route.removeFirstInstruction();
-//		// Get address to go to
-//		Address iAdd = i.getAddress();
-//		// Get trucks current address
-//		Address tAdd = t.getCurrentAddress();
-//
-//		ArrayList<Instruction> ins = new ArrayList<Instruction>();
-//
-//		// If the street directions don't match up, the route is discontinuous, check to
-//		// see if can be fixed
-//		if ((iAdd.getHouseNumber() % 100 == 0) && (iAdd.getStreetDirection() != tAdd.getStreetDirection())) {
-//			// Going to street is invalid, need to correct
-//			int newHouse = iAdd.getStreetNumber() * 100;
-//			int newStreet = iAdd.getHouseNumber() / 100;
-//
-//			if (newStreet != tAdd.getStreetNumber()) {
-//				System.out.println("INVALID ROUTE");
-//			} else {
-//				Address iOld = iAdd;
-//				iAdd = new Address(newHouse, newStreet, tAdd.getStreetDirection());
-//				System.out.println("Fixed bad Address: " + iOld + " -> " + iAdd);
-//				iOld = null;
-//			}
-//
-//		}
-//
-//		// Calculate distance between addresses
-//		int hNum = tAdd.getHouseNumber() - iAdd.getHouseNumber();
-//		boolean decreasing = false;
-//		// If the distance is a positive value, then Addresses should be decreasing to
-//		// reach it
-//		if (hNum > 0)
-//			decreasing = true;
-//		hNum = (Math.abs(hNum));
-//		// Calculate discrete addresses to reach the endpoint
-//		for (int a = 0; a <= hNum; a += 10) {
-//			if (decreasing)
-//				ins.add(new Instruction(
-//						new Address(tAdd.getHouseNumber() - a, tAdd.getStreetNumber(), tAdd.getStreetDirection()), 1));
-//			else
-//				ins.add(new Instruction(
-//						new Address(tAdd.getHouseNumber() + a, tAdd.getStreetNumber(), tAdd.getStreetDirection()), 1));
-//		}
-//		// All endpoints except for the final destination should be turn locations, so
-//		// set truck as if it was on the other street
-//		if (ins.get(ins.size() - 1).getAddress().getHouseNumber() % 100 == 0) {
-//			Address old = ins.get(ins.size() - 1).getAddress();
-//			ins.remove(ins.size() - 1);
-//			ins.add(new Instruction(new Address(old.getStreetNumber() * 100, old.getHouseNumber() / 100,
-//					(old.getStreetDirection() == StreetDirection.SOUTH) ? StreetDirection.EAST : StreetDirection.SOUTH),
-//					1));
-//		}
-//
-//		instructions = ins;
-//
-//	}
-
-	// Move truck based on XY coordinates rather than address
-//	@Deprecated
-//	public void drawRouteEvenNewer(Graphics2D g) {
-//		if (route == null || route.getRoute().isEmpty()) {
-//			route = (RouteTo) t.allOrderRoute();
-//		}
-//		Dimension cur = getAddressXY(t.getCurrentAddress());
-//		Dimension intermediate = cur;
-//		if (distanceToNext == 0)
-//			next = getAddressXY(route.getRoute().get(0).getAddress());
-//
-//		System.out.println("(" + cur.width + "," + cur.height + ");(" + next.width + "," + next.height + ")");
-//
-//		if (cur.width == next.width && cur.height == next.height) {
-//			// Next instruction
-//			distanceToNext = 0;
-//		} else if (cur.width == next.width) {
-//			distanceToNext = cur.height - next.height;
-//			if (distanceToNext > 0) {
-//				// Subtract one from height
-//				intermediate = new Dimension(cur.width, cur.height - 1);
-//			} else {
-//				// Add one to height
-//				intermediate = new Dimension(cur.width, cur.height + 1);
-//			}
-//		} else if (cur.height == next.height) {
-//			distanceToNext = cur.width - next.width;
-//			if (distanceToNext > 0) {
-//				// Subtract one from width
-//				intermediate = new Dimension(cur.width - 1, cur.height);
-//			} else {
-//				// Add one to width
-//				intermediate = new Dimension(cur.width + 1, cur.height);
-//			}
-//		} else {
-//			System.out.println(
-//					"INVALID ROUTE: (" + cur.width + "," + cur.height + ");(" + next.width + "," + next.height + ")");
-//		}
-//		if (intermediate.height == cur.height) {
-//			// Get Address from XY when height is street number
-//
-//		} else if (intermediate.width == cur.width) {
-//
-//		}
-//	}
 
 	private void drawAddresses(Graphics2D g) {
 		PriorityQueue<Order> orders = t.getAllOrders();
@@ -395,7 +169,6 @@ public class GridPanel extends JPanel {
 				double timeConvertedToSec= (countDistance/truckSpeed)*3600;
 				time2= time1.plusSeconds((long) timeConvertedToSec);
 
-				// last index
 				if (cur.getHouseNumber()%100==0){
 					System.out.println("Turning in  "+cur+ " at time : " + time2);
 					// if cur is the last turn before getting back to the distribution Center
@@ -404,8 +177,8 @@ public class GridPanel extends JPanel {
 					}
 				}else if (cur.getHouseNumber()%100!=0){
 					if (t.getCurRoute().getRoute().size()!=1){
-					System.out.println("Just delivered the Order of : " + cur + " at time : "+ time2);
-					System.out.println("-----");}
+						System.out.println("Just delivered the Order of : " + cur + " at time : "+ time2);
+						System.out.println("-----");}
 					if (t.getCurRoute().getRoute().size() == 1){
 						System.out.println("Just got back to the distribution Center : " + cur + " at time : "+ time2);
 						System.out.println("-------------------------------------------");

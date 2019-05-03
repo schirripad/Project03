@@ -41,12 +41,15 @@ public class MapWindow extends JFrame {
 	}
 
 	private void init() {
-		setSize(400, 400);
+		setSize(400, 420);
 		setTitle("Sandwich Truck Simulation");
 		GridPanel grid = new GridPanel(truck, hoodSize);
 		grid.setSize(400, 400);
 		grid.setDoubleBuffered(true);
+
 		add(grid);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 

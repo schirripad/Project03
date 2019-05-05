@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-import Simulation.food.Chip;
-import Simulation.food.Drink;
-import Simulation.food.Sandwich;
+import Simulation.food.SandwichFactory;
 
 /**
  * 
@@ -78,8 +76,9 @@ public class AddressLoader {
 					}
 
 					// Create corresponding Address object, add it to 'addresses'
+					SandwichFactory sf =  new SandwichFactory();
 					orders.add(new Order(new Address(houseNum, streetNum, streetDir), LocalTime.of(hour, min),
-							new Chip(numChips), new Drink(numDrinks), new Sandwich(numSandwich)));
+							sf.createSandwich("")));
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid address found!\n>" + curLine);
 				}

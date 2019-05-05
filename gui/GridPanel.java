@@ -1,15 +1,21 @@
 package Simulation.gui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.time.LocalTime;
+
 import javax.swing.JPanel;
 
 import Simulation.Address;
 import Simulation.Instruction;
+import Simulation.Observer;
 import Simulation.Order;
 //import Simulation.RouteTo;
 import Simulation.Router;
@@ -21,8 +27,9 @@ import Simulation.StreetDirection;
  * 
  * @author Daniel
  *
- * bug solving some of the issues we have had with
- * the simulation of the track movement and drawRoute method and drawAddresses method (paints the truck and all addresses)
+ *         bug solving some of the issues we have had with the simulation of the
+ *         track movement and drawRoute method and drawAddresses method (paints
+ *         the truck and all addresses)
  * @author Riyad
  */
 public class GridPanel extends JPanel {
@@ -35,11 +42,12 @@ public class GridPanel extends JPanel {
 	private Router route;
 	private Dimension next;
 	private List<Address> paintMe = new LinkedList<>();
+	private List<Observer> observers = new LinkedList<>();
 	private double countDistance = 0;
 	int count;
 
-	//set starting time
-	LocalTime time1 = LocalTime.of(10,0,0);
+	// set starting time
+	LocalTime time1 = LocalTime.of(10, 0, 0);
 	// setting the truck speed
 	public static final int truckSpeed = SandwichTruck.truckSpeed;
 	// setting the distance between houses
@@ -48,9 +56,9 @@ public class GridPanel extends JPanel {
 	private static int instructionCounter = 0;
 	private static ArrayList<Instruction> instructions;
 
-
-
 	// TODO Make grid adjustable
+
+	// Make the GridPanel the Subject, and the Truck/Console the observer
 
 	public GridPanel(SandwichTruck truck) {
 		t = truck;
@@ -62,9 +70,14 @@ public class GridPanel extends JPanel {
 		hoodWidth = neighborHoodSize.width;
 	}
 
+	public void addObserver(Observer o) {
+		observers.add(o);
+	}
+
 	@Override
 	public void setSize(int x, int y) {
-		super.setSize(x, x);
+		if (x < 400 && y < 400)
+			super.setSize(x, x);
 	}
 
 	@Override
@@ -85,9 +98,9 @@ public class GridPanel extends JPanel {
 		// Implement scaling in MapWindow? Make sure GridPanel is always a square
 		// relative to size of window
 		if (getWidth() < getHeight())
-			lineDistance = this.getWidth() / (hoodWidth );
+			lineDistance = this.getWidth() / (hoodWidth);
 		else
-			lineDistance = this.getHeight() / (hoodHeight -1);
+			lineDistance = this.getHeight() / (hoodHeight - 1);
 		houseDistance = lineDistance / 9;
 		// Make XY Ambiguous
 		for (int i = 0; i < hoodHeight; i++) {
@@ -110,7 +123,7 @@ public class GridPanel extends JPanel {
 		// set truck distribution Center @author Riyad
 		Dimension disTruck = getAddressXY(t.distributionCenter);
 		g.setColor(Color.BLUE);
-		g.fillRect(disTruck.width,disTruck.height,5,5);
+		g.fillRect(disTruck.width, disTruck.height, 5, 5);
 
 	}
 
@@ -121,24 +134,23 @@ public class GridPanel extends JPanel {
 		int blockX, blockY;
 		if (a.getStreetDirection() == StreetDirection.EAST) {
 			// Y value is street number, house is X
-			blockY = a.getStreetNumber() *lineDistance;
-//			blockX = (((a.getHouseNumber())/100 *lineDistance))+((a.getHouseNumber() /100) + houseDistance);
-			blockX = ((a.getHouseNumber()/100) *lineDistance) + ((a.getHouseNumber()%100)/10)*houseDistance;
+			blockY = a.getStreetNumber() * lineDistance;
+			// blockX = (((a.getHouseNumber())/100 *lineDistance))+((a.getHouseNumber()
+			// /100) + houseDistance);
+			blockX = ((a.getHouseNumber() / 100) * lineDistance) + ((a.getHouseNumber() % 100) / 10) * houseDistance;
 
 		} else {
 			// X value is street number, house is Y
-			blockX = a.getStreetNumber() *lineDistance;
-			blockY = ((a.getHouseNumber()/100) *lineDistance) + ((a.getHouseNumber()%100)/10)*houseDistance;
+			blockX = a.getStreetNumber() * lineDistance;
+			blockY = ((a.getHouseNumber() / 100) * lineDistance) + ((a.getHouseNumber() % 100) / 10) * houseDistance;
 		}
 
 		return new Dimension(blockX, blockY);
 	}
 
-
 	public int getInstructionTime() {
 		return instructionCounter;
 	}
-
 
 	private void drawAddresses(Graphics2D g) {
 		PriorityQueue<Order> orders = t.getAllOrders();
@@ -149,84 +161,91 @@ public class GridPanel extends JPanel {
 		}
 	}
 
-
-	//Fixed the bugs of the drawRoute that we had have in Sprint3
+	// Fixed the bugs of the drawRoute that we had have in Sprint3
 	// and add the time(hours, minutes, seconds) for the instructions. @author Riyad
 	private void drawRoute(Graphics2D g) {
-		//LocalTime time2;
+		// LocalTime time2;
 		Instruction next = t.peekNextRouteInstruction();
 		Address cur = t.getCurrentAddress();
 		Address nextAdd = next.getAddress();
 		PriorityQueue<Order> orders = t.getAllOrdersCopy();
 		LocalTime time2;
-		//System.out.println(cur);
+		// System.out.println(cur);
 
 		if (cur.getHouseNumber() == nextAdd.getHouseNumber() && cur.getStreetNumber() == nextAdd.getStreetNumber()
 				&& cur.getStreetDirection() == nextAdd.getStreetDirection()) {
-				next = t.getNextRouteInstruction();
-				nextAdd = next.getAddress();
-			if (count!=0){
-				double timeConvertedToSec= (countDistance/truckSpeed)*3600;
-				time2= time1.plusSeconds((long) timeConvertedToSec);
+			next = t.getNextRouteInstruction();
+			nextAdd = next.getAddress();
+			if (count != 0) {
+				double timeConvertedToSec = (countDistance / truckSpeed) * 3600;
+				time2 = time1.plusSeconds((long) timeConvertedToSec);
 
-				if (cur.getHouseNumber()%100==0){
-					System.out.println("Turning in  "+cur+ " at time : " + time2);
+				// last index
+				if (cur.getHouseNumber() % 100 == 0) {
+					System.out.println("Turning in  " + cur + " at time : " + time2);
 					// if cur is the last turn before getting back to the distribution Center
-					if (t.getCurRoute().getRoute().size() == 2){
+					if (t.getCurRoute().getRoute().size() == 2) {
 						System.out.println(". \n. \n--Delivered all the orders!--");
 					}
-				}else if (cur.getHouseNumber()%100!=0){
-					if (t.getCurRoute().getRoute().size()!=1){
-						System.out.println("Just delivered the Order of : " + cur + " at time : "+ time2);
-						System.out.println("-----");}
-					if (t.getCurRoute().getRoute().size() == 1){
-						System.out.println("Just got back to the distribution Center : " + cur + " at time : "+ time2);
+				} else if (cur.getHouseNumber() % 100 != 0) {
+					if (t.getCurRoute().getRoute().size() != 1) {
+						System.out.println("Just delivered the Order of : " + cur + " at time : " + time2);
+						System.out.println("-----");
+					}
+					if (t.getCurRoute().getRoute().size() == 1) {
+						System.out.println("Just got back to the distribution Center : " + cur + " at time : " + time2);
 						System.out.println("-------------------------------------------");
 					}
 				}
 				// set the original time to the updated time
 				time1 = time2;
 				// reset distance & count, to recalculate
-				countDistance=0;
-				count=0;
+				countDistance = 0;
+				count = 0;
 			}
-				//System.out.println("Turn");
+			// System.out.println("Turn");
 		}
 		if (cur.getStreetDirection() != nextAdd.getStreetDirection()) {
 			instructionCounter = next.getTime();
 			// This means that we are turning
-			t.setAddress(nextAdd);
+			for (Observer o : observers)
+				o.update(new Instruction(nextAdd, time1));
 			return;
 		}
 		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {
 			// DO nothing, the method t.getNextRouteInstruction() will increment the truck
 			// to the next instruction
-				for (Order i : orders) {
-					if (i.getAddress().equals(nextAdd)) {
-						paintMe.add(i.getAddress());
-					}
+			for (Order i : orders) {
+				if (i.getAddress().equals(nextAdd)) {
+					paintMe.add(i.getAddress());
 				}
+			}
 		}
-		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {}
-
-		else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
-			t.setAddress(new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection()));
-			countDistance+=distanceToNext;
-			count+=1;
+		if (cur.getHouseNumber() == nextAdd.getHouseNumber()) {
+		} else if (cur.getHouseNumber() > nextAdd.getHouseNumber()) {
+			for (Observer o : observers)
+				o.update(new Instruction(
+						new Address(cur.getHouseNumber() - 10, cur.getStreetNumber(), cur.getStreetDirection()),
+						time1));
+			countDistance += distanceToNext;
+			count += 1;
 		} else {
-			t.setAddress(new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection()));
-			countDistance+=distanceToNext;
-			count+=1;
-			//time2= time1.plusSeconds((long)distanceToNext/truckSpeed);
+			for (Observer o : observers)
+				o.update(new Instruction(
+						new Address(cur.getHouseNumber() + 10, cur.getStreetNumber(), cur.getStreetDirection()),
+						time1));
+			countDistance += distanceToNext;
+			count += 1;
+			// time2= time1.plusSeconds((long)distanceToNext/truckSpeed);
 		}
 	}
 
 	// Add drawDeliveredOrderAddress to paint the visited Address @author Riyad
-	public void drawDeliveredOrderAddress(Graphics2D g){
+	public void drawDeliveredOrderAddress(Graphics2D g) {
 		g.setColor(Color.orange);
-			for (Address ii : paintMe){
-				Dimension iXY = getAddressXY(ii);
-				g.drawOval(iXY.width, iXY.height, 5, 5);
-			}
+		for (Address ii : paintMe) {
+			Dimension iXY = getAddressXY(ii);
+			g.drawOval(iXY.width, iXY.height, 5, 5);
+		}
 	}
 }

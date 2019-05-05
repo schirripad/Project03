@@ -1,5 +1,7 @@
 package Simulation.food;
 
+import java.util.ArrayList;
+
 import Simulation.Food;
 
 /**
@@ -8,14 +10,15 @@ import Simulation.Food;
  *
  */
 public class Sandwich extends Food {
-	private final int TYPE_1 = 0, TYPE_2 = 1, TYPE_3 = 3;
-	private int type;
+	private ArrayList<Topping> toppings = new ArrayList<Topping>();
+	private int totalPrice = 0;
 
-	public Sandwich(int type) {
-		this.type = type;
+	public void addTopping(Topping t) {
+		toppings.add(t);
+		totalPrice += t.getPriceInCents();
 	}
 
-	public int getType() {
-		return type;
+	public int getTotalPrice() {
+		return totalPrice;
 	}
 }

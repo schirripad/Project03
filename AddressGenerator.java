@@ -29,12 +29,7 @@ public class AddressGenerator {
 
 				randomHour = rand.nextInt((18 - 10) + 1) + 10;
 				randomMinute = rand.nextInt((59 - 0) + 1) + 0;
-				randomChip = rand.nextInt((2 - 0) + 1) + 1;
-				randomDrink = rand.nextInt((2 - 0) + 1) + 1;
-                randomMeat = rand.nextInt((2 - 0) + 1) + 1;
-                randomBread = rand.nextInt((1 - 0) + 1) + 1;
-                randomCondiment = rand.nextInt((7 - 0) + 1) + 1;
-                randomVegetables = rand.nextInt((3 - 0) + 1) + 1;
+
 
                 //Creates required random integers to randomize orders and create real world data DH
 
@@ -107,6 +102,14 @@ public class AddressGenerator {
 
 				for(int j = 0; j < randomSandwichNumber; j++){
 					// THIS IS THE FOR LOOP FOR MULTIPLE ORDERS PER ADDRESS I HAVE IT AS 1 THRU 9
+
+					randomChip = rand.nextInt((2 - 0) + 1) + 1;
+					randomDrink = rand.nextInt((2 - 0) + 1) + 1;
+					randomMeat = rand.nextInt((2 - 0) + 1) + 1;
+					randomBread = rand.nextInt((1 - 0) + 1) + 1;
+					randomCondiment = rand.nextInt((7 - 0) + 1) + 1;
+					randomVegetables = rand.nextInt((3 - 0) + 1) + 1;
+					// MOVED RANDOM INTEGERS DOWN HERE SO ORDERS DO NOT REPEAT!
 
 
 					if(randomMeat == 1){

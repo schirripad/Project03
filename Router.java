@@ -1,5 +1,6 @@
 package Simulation;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -7,11 +8,13 @@ import java.util.List;
  * 
  * @author Daniel
  *
- * add getTruckHeading method
+ *         add getTruckHeading method
  * @author Riyad
  *
  */
 public interface Router {
+
+	public void createRoute(Collection<Order> orders, SandwichTruck t);
 
 	public double getRouteLength();
 

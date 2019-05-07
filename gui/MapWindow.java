@@ -103,7 +103,7 @@ public class MapWindow extends JFrame {
 		ImageIcon iconSch = new ImageIcon("Simulation/SchaperLogo2.png");
 
 		while (true) {
-			Object[] strategies = { "", "both-hand turn", "left-hand turn" };
+			Object[] strategies = {"both-hand turn", "left-hand turn" };
 			userInputStr = (String) JOptionPane.showInputDialog(null, "Choose a strategy movement for the truck: ",
 					"Select Strategy", JOptionPane.PLAIN_MESSAGE, iconSch, strategies, "");
 			try {
@@ -113,7 +113,7 @@ public class MapWindow extends JFrame {
 				} else if (userInputStr.contains("left")) {
 					truck.selectedStrategy = 2;
 				} else
-					throw new RuntimeException("Not a valid choice!");
+					System.exit(0);
 				break;
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, ex.getMessage(), "Error Dialog", JOptionPane.ERROR_MESSAGE);

@@ -87,10 +87,7 @@ public class GridPanel extends JPanel {
 		drawAddresses(g);
 		drawDeliveredOrderAddress(g);
 		drawTruck(g);
-		// if (instructionCounter == 0)
 		drawRoute(g);
-		// else
-		// instructionCounter--;
 	}
 
 	private void drawGrid(Graphics2D g) {

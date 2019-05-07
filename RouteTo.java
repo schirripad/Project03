@@ -23,7 +23,7 @@ public class RouteTo implements Router{
 	double theRouteLength;
 
 
-	RouteTo(Collection<Order> orderss, SandwichTruck t) {
+	public void createRoute(Collection<Order> orderss, SandwichTruck t) {
 		truck = t.getCurrentAddress();
 
 		Iterator<Order> iterator = orderss.iterator();

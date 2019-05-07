@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
+import Simulation.food.Sandwich;
 import Simulation.food.SandwichFactory;
 
 /**
@@ -67,18 +68,32 @@ public class AddressLoader {
 						min = Integer.parseInt(time[1].substring(0, time[1].length() - 2));
 
 						// Parse Food data
-						numChips = Integer.parseInt(addressParts[7]);
-						numDrinks = Integer.parseInt(addressParts[9]);
-						numSandwich = Integer.parseInt(addressParts[11]);
+						SandwichFactory sf = new SandwichFactory();
+						ArrayList<Sandwich> sandwiches = new ArrayList<Sandwich>();
+						for (int i = 5; i < addressParts.length; i++) {
+							if (addressParts[i].equals("Order:")) {
+								if (addressParts.length < i + 12) {
+									System.out.println("Invalid order!");
+									continue;
+								}
+								Sandwich s = sf.createSandwich(addressParts[i + 2] + ":M" + addressParts[i + 4] + ":C"
+										+ addressParts[i + 6] + ":V" + addressParts[i + 8] + ":D" + addressParts[i + 10]
+										+ ":H" + addressParts[i + 12]);
+								System.out.println("Created sandwich:");
+								System.out.println(s.toString() + " priced at $" + s.getTotalPrice() / 100 + "."
+										+ s.getTotalPrice() % 100);
+								sandwiches.add(s);
+								i = i + 13;
+							}
+						}
+						Sandwich[] wiches = new Sandwich[sandwiches.size()];
+						sandwiches.toArray(wiches);
+						orders.add(new Order(new Address(houseNum, streetNum, streetDir), LocalTime.of(hour, min),
+								wiches));
 					} catch (NumberFormatException e) {
 						System.out.println("Invalid address found!\n>" + curLine);
 						continue;
 					}
-
-					// Create corresponding Address object, add it to 'addresses'
-					SandwichFactory sf =  new SandwichFactory();
-					orders.add(new Order(new Address(houseNum, streetNum, streetDir), LocalTime.of(hour, min),
-							sf.createSandwich("")));
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid address found!\n>" + curLine);
 				}

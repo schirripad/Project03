@@ -37,7 +37,20 @@ public class ConsolePanel extends JPanel implements Observer {
 			// Moving
 			line = line + "Truck moving to " + a.toString();
 		}
-		line = line + " @ time " + t.getHour() + ":" + t.getMinute() + ":" + t.getSecond();
+		int hour = t.getHour();
+		line = line + " @ time " + hour + ":";
+		int min = t.getMinute();
+		int sec = t.getSecond();
+		if (min < 10) {
+			line = line + "0" + min + ":";
+		} else {
+			line = line + min + ":";
+		}
+		if (sec < 10) {
+			line = line + "0" + sec;
+		} else {
+			line = line + sec;
+		}
 		console.append(line + "\n");
 	}
 

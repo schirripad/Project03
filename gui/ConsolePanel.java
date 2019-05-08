@@ -11,7 +11,7 @@ import Simulation.Instruction;
 import Simulation.Observer;
 
 public class ConsolePanel extends JPanel implements Observer {
-	JTextArea console;
+	private JTextArea console;
 
 	public ConsolePanel(GridPanel p) {
 		p.addObserver(this);

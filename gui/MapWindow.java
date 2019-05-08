@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import Simulation.Clock;
 import Simulation.SandwichTruck;
 
 /**
@@ -88,7 +87,6 @@ public class MapWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				grid.repaint();
 				desktop.repaint();
-				Clock.updateTime();
 			}
 		});
 
@@ -103,7 +101,7 @@ public class MapWindow extends JFrame {
 		ImageIcon iconSch = new ImageIcon("Simulation/SchaperLogo2.png");
 
 		while (true) {
-			Object[] strategies = {"both-hand turn", "left-hand turn" };
+			Object[] strategies = { "both-hand turn", "left-hand turn" };
 			userInputStr = (String) JOptionPane.showInputDialog(null, "Choose a strategy movement for the truck: ",
 					"Select Strategy", JOptionPane.PLAIN_MESSAGE, iconSch, strategies, "");
 			try {

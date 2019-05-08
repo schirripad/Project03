@@ -6,5 +6,5 @@ package Simulation;
  * @author Daniel
  *
  */
-public abstract class Food {
+public interface Food {
 }

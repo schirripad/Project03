@@ -9,7 +9,7 @@ import Simulation.Food;
  * @author Daniel
  *
  */
-public abstract class Sandwich extends Food {
+public abstract class Sandwich implements Food {
 	private ArrayList<Topping> toppings = new ArrayList<Topping>();
 	private int totalPrice = 0;
 
